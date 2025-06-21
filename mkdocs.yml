@@ -10,6 +10,7 @@ nav:
   #   - lesson1/main.md
   - lesson1/main.md
   - lesson2/main.md
+  - lesson3/lesson3.md
 
 markdown_extensions:
   - admonition
