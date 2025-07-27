@@ -12,6 +12,9 @@ nav:
   - lesson2/main.md
   - lesson3/lesson3.md
   - lesson4/lesson4.md
+  - lesson5/lesson5.md
+  - lesson6/lesson6.md
+  - lesson7/lesson7.md
 
 markdown_extensions:
   - admonition

@@ -1,4 +1,4 @@
-# Занятие 1. Что такое python и с чем его едят?
+# Урок 1. Что такое python и с чем его едят?
 
 ### Презентация
 [ссылка](https://docs.google.com/presentation/d/1W9fVFCIVrJBWn5F7w_hJpQbvK-QkaoI3ltZslxA7ob0/edit?usp=sharing)
