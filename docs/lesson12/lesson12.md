@@ -177,12 +177,60 @@ print(f"Первый товар: {my_list[0]}")  # Первый товар: мо
 #### Зачем нужно наследование?
 
 
+
 #### Наследование на примере
 
-Мне не очень нравится пример из книги, потому что он далек от практической пользы. 
-Давайте рассмотрим использование наследования на такой задачек. Мы хотим сделать класс, который хранит данные о должниках и их задолжностях.
-Чтобы не писать его с нуля, за основу возьмем класс словаря из питона
+Мне не очень нравится пример из книги, потому что он далек от практической пользы.
 
+Наследование фигур:
+```python
+class Shape:
+    def get_area(self):
+        raise NotImplementedError('Не реализовано')
+
+    def get_perimeter(self):
+         raise NotImplementedError('Не реализовано')
+
+    def __str__(self):
+        return f'Площадь: {self.get_area()}, периметр: {self.get_perimeter()}'
+
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def get_area(self):
+        return 3.14 * self.radius ** 2
+
+
+    def get_perimeter(self):
+        return 2 * 3.14 * self.radius
+
+
+class Rectangle(Shape):
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+    def get_area(self):
+        return self.a * self.b
+
+
+    def get_perimeter(self):
+        return 2 * (self.a + self.b)
+
+
+class Square(Rectangle):
+    def __init__(self, a):
+        super().__init__(a, a)
+
+c = Circle(10)
+print(c)
+```
+
+
+Мы хотим сделать класс, который хранит данные о должниках и их задолжностях.
+Чтобы не писать его с нуля, за основу возьмем класс словаря из питона
 ```python
 class CreditsDict(dict):
     def get_credit_sum(self):
