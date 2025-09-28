@@ -20,6 +20,8 @@ nav:
   - lesson10/lesson10.md
   - lesson11/lesson11.md
   - lesson12/lesson12.md
+  - lesson12_modules/lesson12_modules.md
+  - lesson14/lesson14.md
 
 
 markdown_extensions:
