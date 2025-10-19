@@ -22,6 +22,8 @@ nav:
   - lesson12/lesson12.md
   - lesson12_modules/lesson12_modules.md
   - lesson14/lesson14.md
+  - lesson15_read_files/lesson15_read_files.md
+  - lesson16_modules_minecraft/lesson16.md
 
 
 markdown_extensions:
