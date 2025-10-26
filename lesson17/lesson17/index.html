@@ -1,0 +1,1036 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../lesson16_modules_minecraft/lesson16/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Урок 17. Представление цвета в компьютере и работа с изображениями в Python - Python-tutoring</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#17-python" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python-tutoring" class="md-header__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python-tutoring
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Урок 17. Представление цвета в компьютере и работа с изображениями в Python
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python-tutoring" class="md-nav__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python-tutoring
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson1/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 1. Что такое python и с чем его едят?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson2/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 2. Запуск кода и переменные
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson3/lesson3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 3. Функции и строковые методы
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson4/lesson4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 4. Числа
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson5/lesson5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 5. Функции, области видимости и циклы
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson6/lesson6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 6. Циклы и условия
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson7/lesson7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 7. Как решать задачи?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson8/lesson8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 8. Рандом, списки, 2 кортежа
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson9/lesson9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 9. Списки и словари
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson10/lesson10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 10. Коты и O-большое
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson11/lesson11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Идеи для проектов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12/lesson12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 12. ООП
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12_modules/lesson12_modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 13. ООП и модули
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson14/lesson14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 14. Работа с файловой системой
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson15_read_files/lesson15_read_files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Чтение и запись файлов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson16_modules_minecraft/lesson16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 16. Установка модулей и minecraft
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Урок 17. Представление цвета в компьютере и работа с изображениями в Python
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Урок 17. Представление цвета в компьютере и работа с изображениями в Python
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Новый материал
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Новый материал">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как компьютер представляет цвета?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как сравнивать цвета?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как сравнивать цвета?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Геометрический подход
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгебраический подход
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minecraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как получить цвет блока в minecraft?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работать с пикселями в питоне?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Итог
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Домашнее задание
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Новый материал
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Новый материал">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как компьютер представляет цвета?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как сравнивать цвета?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как сравнивать цвета?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Геометрический подход
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Алгебраический подход
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minecraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как получить цвет блока в minecraft?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работать с пикселями в питоне?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Итог
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Домашнее задание
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="17-python">Урок 17. Представление цвета в компьютере и работа с изображениями в Python</h1>
+<h2 id="_1">Новый материал</h2>
+<h3 id="_2">Как компьютер представляет цвета?</h3>
+<p>Любой цвет в реальной жизни можно представить как комбинацию трех основных цветов:</p>
+<ul>
+<li><strong>R</strong> (Red) - красный</li>
+<li><strong>G</strong> (Green) - зеленый  </li>
+<li><strong>B</strong> (Blue) - синий</li>
+</ul>
+<p>В компьютере цвет представлен тремя числами от 0 до 255, где каждое число обозначает интенсивность соответствующего цвета.</p>
+<p>Примеры цветов в формате RGB:</p>
+<ul>
+<li><code>(255, 0, 0)</code> - ярко-красный</li>
+<li><code>(120, 0, 0)</code> - темно-красный</li>
+<li><code>(0, 255, 0)</code> - ярко-зеленый</li>
+<li><code>(0, 0, 0)</code> - черный</li>
+<li><code>(255, 255, 255)</code> - белый</li>
+<li><code>(255, 255, 0)</code> - ярко-желтый</li>
+<li><code>(120, 120, 0)</code> - темно-желтый</li>
+</ul>
+<div class="admonition question">
+<p class="admonition-title">Почему для каждого цвета используется именно диапазон от 0 до 255?</p>
+</div>
+<h3 id="_3">Как сравнивать цвета?</h3>
+<p><strong>Постановка задачи</strong></p>
+<p>У нас есть цвет <code>(255, 0, 0)</code> - ярко-красный. Нужно определить, какой из этих цветов ближе к нему:</p>
+<ul>
+<li><code>(139, 123, 0)</code></li>
+<li><code>(210, 0, 0)</code></li>
+<li><code>(0, 0, 0)</code></li>
+<li><code>(255, 255, 255)</code></li>
+</ul>
+<h4 id="_4">Геометрический подход</h4>
+<p>А давайте представим цвет в виде точки в 3-х мерном пространстве?</p>
+<p><img alt="" src="../../static/dots_20.png" /></p>
+<p><img alt="" src="../../static/dots_40.png" /></p>
+<p>Визуально видим, что ближе всего <code>(210, 0, 0)</code></p>
+<div class="admonition question">
+<p class="admonition-title">Почему геометрическая интерпретация помогает сравнивать цвета?</p>
+</div>
+<h4 id="_5">Алгебраический подход</h4>
+<p>Но как рассчитать расстояние от одной точки до другой в виде числа?</p>
+<p><strong>Теорема Пифагора для 2-х координат</strong></p>
+<p>Пусть у нас есть точки (2, 2) и (5, 6)</p>
+<p>Какое между ними будет расстояние?</p>
+<p><img alt="" src="../../static/pythagor.png" /></p>
+<p>То есть формула будет такой</p>
+<p><span class="arithmatex">\(\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}\)</span></p>
+<p>Или же с нашими координатами</p>
+<p><span class="arithmatex">\(\sqrt{(5 - 2)^2 + (6 - 2)^2}\)</span></p>
+<p>То есть считая:</p>
+<ul>
+<li><span class="arithmatex">\((x_2 - x_1)\)</span> вычисляем длину прямой по оси X</li>
+<li><span class="arithmatex">\((y_2 - y_1)\)</span> по оси y</li>
+<li><span class="arithmatex">\(\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}\)</span> - теорема Пифагор для треугольника по XY</li>
+</ul>
+<p><strong>Теорема Пифагора для 3-х координат</strong></p>
+<p>Чтобы получить теорему Пифагора для 3-х координат просто добавим квадрат разности z под корень.</p>
+<p><span class="arithmatex">\(\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}\)</span></p>
+<p>Например, у нас есть точки (0, 0, 0) и (2, 3, 4)
+Тогда расстояние между ними будет:</p>
+<p><span class="arithmatex">\(\sqrt{(2 - 0)^2 + (3 - 0)^2 + (4 - 0)^2} = \sqrt{4 + 9 + 16} = \sqrt{29}\)</span></p>
+<p><strong>Вернемся к цветам</strong> </p>
+<p>Чтобы понять, какой цвет ближе, нужно найти наименьшее расстояние между цветами в RGB-пространстве.</p>
+<p>то есть посчитать:</p>
+<p><span class="arithmatex">\(\sqrt{(R_2 - R_1)^2 + (G_2 - G_1)^2 + (B_2 - B_1)^2}\)</span></p>
+<p>где <span class="arithmatex">\(R_2\)</span>, <span class="arithmatex">\(R_1\)</span> и т.д. - значения цветов точек в канале RGB</p>
+<div class="admonition question">
+<p class="admonition-title">Как бы вы вычислили расстояние между цветами <code>(255, 10, 5)</code> и <code>(210, 0, 0)</code>?</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Как подсчет расстояния между цветами поможет нам сделать pixel art?</p>
+</div>
+<h3 id="minecraft">Как получить цвет блока в minecraft?</h3>
+<p>У экземпляра класса Block есть метод <code>getRGBA</code>:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mine</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">block</span> <span class="o">=</span> <span class="n">Block</span><span class="p">(</span><span class="mi">159</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">getRGBA</span><span class="p">())</span> <span class="c1"># (210, 178, 161, 255)</span>
+</span></code></pre></div></p>
+<p>Выводится 4 числа. 4-е это прозрачность, оно нас не интересует. Первые 3 это как раз RGB.</p>
+<h3 id="_6">Как работать с пикселями в питоне?</h3>
+<p>Для этого нам пригодятся 2 пакета:</p>
+<ul>
+<li>PIL - для чтения изображений </li>
+<li>numpy - для преобразования изображения в список numpy </li>
+</ul>
+<p>Для начала установим библиотеки при помощи
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip install numpy pillow
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Куда устанавливать?</p>
+<p>Так как minecraft использует python без виртуального окружения, 
+то надо будет выполнить команду в командной строке windows, а не pycharm. 
+Иначе minecraft не увидит установленные пакет</p>
+</div>
+<p>Теперь получим изображение в python:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Получаем экземпляр класса Image из изображения</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;pythagor.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Преобразуем в массив numpy, чтобы получить значение каждого пикселя</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">img_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># Выводим размерность изображения. </span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">img_list</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1"># Выводится что-то вроде (1000, 1400, 3), где </span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># - 1000 - кол-во пикселей в высоту</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># - 1400 - кол-во пикселей в ширину</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># - 3 кол-во цветовых каналов. В нашем случае RGB</span>
+</span></code></pre></div></p>
+<p>Теперь, когда у нас есть список с пикселями попробуем их получить.
+На изображении ниже показано, что координаты пикселей отсчитывают от левого верхнего угла изображения</p>
+<p><img alt="" src="../../static/pixel_coord.jpg" /></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">print</span><span class="p">(</span><span class="n">img_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="c1"># значение левого верхнего пикселя</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">img_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="c1"># значение пикселя правее предыдущего</span>
+</span></code></pre></div>
+<p>А как теперь получить значение каждого канала цвета?</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Интенсивность красного верхнего левого пикселя: </span><span class="si">{</span><span class="n">img_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Интенсивность зеленого верхнего левого пикселя: </span><span class="si">{</span><span class="n">img_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Интенсивность синего верхнего левого пикселя: </span><span class="si">{</span><span class="n">img_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Этих знаний будет достаточно, чтобы получить информацию о цвете пикселя</p>
+<h3 id="_7">Итог</h3>
+<p>Теперь мы можем:</p>
+<ul>
+<li>получить цвет пикселя изображения</li>
+<li>получить цвет блока в minecraft</li>
+<li>посчитать расстоянием от цвета блока до цвета пикселя. Чем оно меньше, тем больше похожи цвета</li>
+</ul>
+<h2 id="_8">Домашнее задание</h2>
+<ul>
+<li>Напишите функцию, которая на вход получает 2 списка со значениями RGB и возвращает расстояние между ними</li>
+<li>Напишите функцию, которая на вход получает цвет пикселя RGB списком и возвращает блок, который больше всего подходит. Выбор происходит из разных цветов блока керамики. В этой функции используйте функцию расстояния</li>
+<li>Напишите функцию, которая на вход получает numpy список с пикселями изображения и рисует пиксель арт этого изображения из блоков.</li>
+</ul>
+<p><strong>Получение размеров изображения:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">shape</span> <span class="o">=</span> <span class="n">img_list</span><span class="o">.</span><span class="n">shape</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">height</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">width</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
