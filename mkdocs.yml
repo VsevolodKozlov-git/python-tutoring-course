@@ -24,6 +24,7 @@ nav:
   - lesson14/lesson14.md
   - lesson15_read_files/lesson15_read_files.md
   - lesson16_modules_minecraft/lesson16.md
+  - lesson17/lesson17.md
 
 
 markdown_extensions:
@@ -37,7 +38,17 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
 
 plugins:
   - search
-  - autolinks 
+  - autolinks
+
+extra_javascript:
+  - javascripts/katex.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
