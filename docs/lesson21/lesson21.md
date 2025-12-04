@@ -92,53 +92,6 @@ print(max_seq)
 ```
 
 
-#### Задание 24.2
-
-
-[Ссылка](https://education.yandex.ru/ege/inf/task/f831021e-44d1-4765-bf94-0e713ed047f1)
-
-Код:
-```python
-
-
-with open('24 (2).txt') as f:
-    y_cnt_2025 = []
-    cnt_2025 = 0
-    index_2025 = 0
-    word_2025 = '2025'
-    index = 0
-    while char := f.read(1):
-        if word_2025[index_2025] == char:
-            index_2025 += 1
-        else:
-            index_2025 = 0
-
-        if index_2025 == 4:
-            index_2025 = 0
-            cnt_2025 += 1
-
-        if char == 'Y':
-            y_cnt_2025.append((index, cnt_2025))
-            index_2025 = 0
-
-        index += 1
-
-max_seq = 0
-start_index = 0
-start_cnt_2025 = 0
-
-for i in range(80, len(y_cnt_2025)):
-    end_index, end_cnt_2025 = y_cnt_2025[i]
-    if end_cnt_2025 - start_cnt_2025 >= 90:
-        cur_seq = end_index - start_index
-        max_seq = max(max_seq, cur_seq)
-
-    start_index, start_cnt_2025 = y_cnt_2025[i-80]
-    start_index += 1
-
-print(max_seq)
-```
-
 ## Домашнее задание
 
 Выполните одно 17-е и одно 24-е на ваш выбор. Если выполнить не получится - не страшно, главное попробуйте. На уроке поделитесь своими наработками, вместе мы их добьем до решения.
@@ -147,18 +100,11 @@ print(max_seq)
 
 [ссылка](https://education.yandex.ru/ege/inf/task/51046c4b-dbc1-444a-bff0-4827db0d36fe)
 
-17.1 Сложнее среднего
+17.2 Сложнее среднего
 
 [ссылка](https://education.yandex.ru/ege/inf/task/d5802159-70ca-4d5d-832c-9856d41c15a6)
 
-24.1. Сложнее среднего
-
-[ссылка](https://education.yandex.ru/ege/inf/task/97e2f438-d6ce-4c55-95f5-8384f58faea4)
 
 24.2. Сложнее среднего
 
 [ссылка](https://education.yandex.ru/ege/inf/task/105730a4-97f7-485b-a86a-76c11682aa85)
-
-24.3. Сложное
-
-[ссылка](https://education.yandex.ru/ege/inf/task/a23593f7-9ba4-422d-89f0-587d3bbacbb6)
