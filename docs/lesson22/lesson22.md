@@ -1,101 +1,231 @@
 
-# Урок 22. Продолжаем решать 24-е
+# Урок 22. Префиксные суммы
 
 ## Материал урока
 
-### 24
+### Задача
+Входные данные:
 
-#### Задание 24.2
+- Пусть у нас есть массив чисел. `numbers`
+- Последовательность пар индексов массива, где первый индекс всегда меньше второго. 
 
+Задача: для каждой пары найти количиство чисел "5" между индексами, включая оба индекса.
 
-[Ссылка](https://education.yandex.ru/ege/inf/task/f831021e-44d1-4765-bf94-0e713ed047f1)
+Примеры:
+```
+numbers = [5, 1, 5, 2, 5]
+Пары:
+[(0, 2), 
+ (1, 4),
+ (0, 4)]
+Ответы:
+(0, 2) -> 2  (индексы 0,1,2: [5, 1, 5] — две пятёрки)
+(1, 4) -> 2  (индексы 1,2,3,4: [1, 5, 2, 5] — две пятёрки)
+(0, 4) -> 3  (все элементы: [5, 1, 5, 2, 5] — три пятёрки)
+```
 
-Код:
-```python
-with open('24 (2).txt') as f:
-    y_cnt_2025 = []
-    cnt_2025 = 0
-    index_2025 = 0
-    word_2025 = '2025'
-    index = 0
-    while char := f.read(1):
-        if word_2025[index_2025] == char:
-            index_2025 += 1
-        else:
-            index_2025 = 0
-
-        if index_2025 == 4:
-            index_2025 = 0
-            cnt_2025 += 1
-
-        if char == 'Y':
-            y_cnt_2025.append((index, cnt_2025))
-            index_2025 = 0
-
-        index += 1
-
-max_seq = 0
-start_index = 0
-start_cnt_2025 = 0
-
-for i in range(80, len(y_cnt_2025)):
-    end_index, end_cnt_2025 = y_cnt_2025[i]
-    if end_cnt_2025 - start_cnt_2025 >= 90:
-        cur_seq = end_index - start_index
-        max_seq = max(max_seq, cur_seq)
-
-    start_index, start_cnt_2025 = y_cnt_2025[i-80]
-    start_index += 1
-
-print(max_seq)
+```
+Входные данные
+numbers = [5, 5, 5, 5]
+Пары:
+[(0, 3),
+ (0, 2),
+ (1, 3)]
+Ответы:
+(0, 3) -> 4  (все 4 элемента — четыре пятёрки)
+(0, 2) -> 3  (индексы 0..2: [5, 5, 5] — три пятёрки)
+(1, 3) -> 3  (индексы 1..3: [5, 5, 5] — три пятёрки)
 ```
 
 
+```
+Входные данные
+numbers = [1, 2, 3, 4, 6]  (нет пятёрок вообще)
+Пары:
+[(0, 3),
+ (1, 4),
+ (0, 4)]
+Ответы:
+(0, 3) -> 0  (индексы 0..3: [1, 2, 3, 4])
+(1, 4) -> 0  (индексы 1..4: [2, 3, 4, 6])
+(0, 4) -> 0  (все элементы)
+```
+
+### Решения 
+```python
+combinations = {}
+
+def get_cnt_5(numbers, pair):
+    if pair in combinations:
+        return combinations[pair]
+
+    cnt_5 = sum([number == 5 for number in numbers[pair[0]: pair[1]+1]]) 
+    combinations[pair] = cnt_5
+    return cnt_5
+
+for pair in pairs:
+    print(get_cnt_5(numbers, pair))
+```
 
 ```python
-with open('24(3).txt', 'r') as f:
-    text = f.read()
-    
-index = 0
-y_pos = []
-cnt_2025_global = 0
-while index < len(text):
-    if text[index] == 'Y':
-        y_pos.append([index, cnt_2025_global])
-        index += 1
-    elif text[index:index+4] == '2025':
-        cnt_2025_global += 1
-        index += 4
-    else:
-        index += 1
+from bisect import bisect_left
 
-max_length = 0 
-for index_end in range(80, len(y_pos)+1):
-    index_start = index_end - 81
-    
-    if index_start <  0:
-        y_index_start = 0
-        cnt_2025_start = 0
-    else:
-        y_index_start, cnt_2025_start = y_pos[index_start]
-        y_index_start += 1
-    
-    if index_end == len(y_pos):
-        y_index_end = len(text) - 1
-        cnt_2025_end = cnt_2025_global
-    else:
-        y_index_end, cnt_2025_end = y_pos[index_end]
-        y_index_end -= 1
+numbers = [5, 1, 5, 2, 5]
+pairs = [(0, 2), 
+ (1, 4),
+ (0, 4)]
 
-    cnt_2025_between = cnt_2025_end - cnt_2025_start
-    if cnt_2025_between >= 90:
-        cur_length = y_index_end - y_index_start + 1
-        max_length = max(max_length, cur_length)
+indexes_5 = []
 
-print(max_length)
-````
+for i, value in enumerate(numbers):
+    if value == 5:
+        indexes_5.append(i)
+
+
+for pair in pairs:
+    start_index = bisect_left(indexes_5, pair[0])
+    end_index = bisect_left(indexes_5, pair[1])
+    print(end_index - start_index + 1)
+```
+
+```python
+numbers = [5, 1, 5, 2, 5]
+pairs = [(0, 2), 
+ (1, 4),
+ (0, 4)]
+
+cum_sum = []
+cnt_5 = 0
+for number in numbers:
+    if number == 5:
+        cnt_5 += 1
+    cum_sum.append(cnt_5)
+
+for pair in pairs:
+    start_index, end_index = pair
+
+    if start_index == 0:
+        start_cnt_5 = 0
+    else:
+        start_cnt_5 = cum_sum[start_index - 1]
+    
+    end_cnt_5 = cum_sum[end_index]
+
+    print(end_cnt_5 - start_cnt_5)
+```
 ## Домашнее задание
 
-24.1 Сложное
+### Leetcode 1
 
-[ссылка](https://education.yandex.ru/ege/inf/task/a23593f7-9ba4-422d-89f0-587d3bbacbb6)
+[ссылка](https://leetcode.com/problems/running-sum-of-1d-array/description/?envType=problem-list-v2&envId=prefix-sum)
+
+Дан массив `nums`. Определим текущую сумму (running sum) массива как `runningSum[i] = sum(nums[0]…nums[i])`.
+
+Верните текущую сумму массива `nums`.
+
+**Пример 1:**
+
+- **Ввод:** nums = [1,2,3,4]
+- **Вывод:** [1,3,6,10]
+- **Объяснение:** Текущая сумма вычисляется следующим образом: [1, 1+2, 1+2+3, 1+2+3+4].
+
+**Пример 2:**
+
+- **Ввод:** nums = [1,1,1,1,1]
+- **Вывод:** [1,2,3,4,5]
+- **Объяснение:** Текущая сумма вычисляется следующим образом: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].
+
+**Пример 3:**
+
+- **Ввод:** nums = [3,1,2,10,1]
+- **Вывод:** [3,4,6,16,17]
+
+### Leetcode 2
+
+[ссылка](https://leetcode.com/problems/range-sum-query-immutable/description/?envType=problem-list-v2&envId=prefix-sum)
+
+
+Дан целочисленный массив `nums`, обработайте несколько запросов следующего типа:
+
+1. Вычислите **сумму** элементов массива `nums` между индексами `left` и `right` **включительно**, где `left <= right`.
+
+Реализуйте класс `NumArray`:
+
+- `NumArray(int[] nums)` Инициализирует объект с целочисленным массивом `nums`.
+- `int sumRange(int left, int right)` Возвращает **сумму** элементов массива `nums` между индексами `left` и `right` **включительно** (т.е. `nums[left] + nums[left + 1] + ... + nums[right]`).
+
+
+**Ввод**
+```
+["NumArray", "sumRange", "sumRange", "sumRange"]
+[[[-2, 0, 3, -5, 2, -1]], [0, 2], [2, 5], [0, 5]]
+```
+
+**Вывод**
+```
+[null, 1, -1, -3]
+```
+
+**Объяснение**
+```
+numArray = NumArray([-2, 0, 3, -5, 2, -1])
+numArray.sumRange(0, 2) # возвращает (-2) + 0 + 3 = 1
+numArray.sumRange(2, 5) # возвращает 3 + (-5) + 2 + (-1) = -1
+numArray.sumRange(0, 5) # возвращает (-2) + 0 + 3 + (-5) + 2 + (-1) = -3
+```
+
+
+### Leetcode 3
+
+[ссылка](https://leetcode.com/problems/find-the-highest-altitude/description/?envType=problem-list-v2&envId=prefix-sum)
+
+Велосипедист отправляется в путешествие по дороге. Маршрут состоит из n + 1 точек на разных высотах. Велосипедист начинает путь в точке 0 с высотой равной 0.
+
+Вам дан целочисленный массив `gain` длиной `n`, где `gain[i]` представляет собой чистый прирост высоты между точками `i` и `i + 1` для всех `0 <= i < n`. Верните наибольшую высоту точки.
+
+**Пример 1:**
+
+- **Ввод:** gain = [-5,1,5,0,-7]
+- **Вывод:** 1
+- **Объяснение:** 
+    - Высоты точек: [0,-5,-4,1,1,-6]
+    - Наибольшая высота равна 1.
+
+**Пример 2:**
+
+- **Ввод:** gain = [-4,-3,-2,-1,4,3,2]
+- **Вывод:** 0
+- **Объяснение:**
+    - Высоты точек: [0,-4,-7,-9,-10,-6,-3,-1]
+    - Наибольшая высота равна 0.
+
+### Leetcode 4
+
+[ссылка](https://leetcode.com/problems/equal-score-substrings/description/?envType=problem-list-v2&envId=prefix-sum)
+
+Вам дана строка `s`, состоящая из строчных английских букв.
+
+Оценка строки — это сумма позиций её символов в алфавите, где 'a' = 1, 'b' = 2, ..., 'z' = 26.
+
+Определите, существует ли такой индекс `i`, что строку можно разбить на две непустые подстроки:
+`s[0..i]` и `s[(i + 1)..(n - 1)]`, которые имеют одинаковую оценку.
+
+Верните `true`, если такое разбиение существует, иначе верните `false`.
+
+**Пример 1:**
+
+- **Ввод:** s = "adcb"
+- **Вывод:** true
+- **Объяснение:**
+    - Разбиение по индексу i = 1
+    - Левая подстрока = s[0..1] = "ad" с оценкой = 1 + 4 = 5
+    - Правая подстрока = s[2..3] = "cb" с оценкой = 3 + 2 = 5
+    - Обе подстроки имеют одинаковую оценку, поэтому результат — true.
+
+**Пример 2:**
+
+- **Ввод:** s = "bace"
+- **Вывод:** false
+- **Объяснение:**
+    - Ни одно разбиение не даёт равных оценок
+    - Поэтому результат — false.
