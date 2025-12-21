@@ -140,6 +140,16 @@ for pair in pairs:
 - **Ввод:** nums = [3,1,2,10,1]
 - **Вывод:** [3,4,6,16,17]
 
+```python
+def f(arr):
+    running_sum = 0
+    prefix_sum = []
+    for val in arr:
+        running_sum += val
+        prefix_sum.append(running_sum)
+    return prefix_sum
+```
+
 ### Leetcode 2
 
 [ссылка](https://leetcode.com/problems/range-sum-query-immutable/description/?envType=problem-list-v2&envId=prefix-sum)
