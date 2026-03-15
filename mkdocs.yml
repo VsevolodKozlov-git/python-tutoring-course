@@ -37,6 +37,9 @@ nav:
   - lesson27/lesson27.md
   - lesson28/lesson28.md
   - lesson29/lesson29.md
+  - lesson30/lesson30.md
+  - lesson31/lesson31.md
+  - lesson32/lesson32.md
 
 markdown_extensions:
   - admonition
