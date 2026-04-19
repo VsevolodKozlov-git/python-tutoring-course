@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Flex-grow интерактивный демо | Учебный пример</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* главная карточка */
+        .demo-card {
+            max-width: 1300px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+            padding: 1.8rem 2rem 2rem 2rem;
+            transition: all 0.2s;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0 0 0.35rem 0;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+
+        .sub {
+            color: #334155;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* FLEX КОНТЕЙНЕР */
+        .flex-container {
+            display: flex;
+            gap: 1.25rem;
+            background: #eef2ff;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+            min-height: 280px;
+        }
+
+        /* БАЗОВЫЕ СТИЛИ ДЛЯ КАЖДОГО БЛОКА */
+        .flex-item {
+            /* ключевое: flex-basis: 0% даёт чистую зависимость от flex-grow */
+            flex-basis: 0%;
+            flex-shrink: 1;      /* позволяет сжиматься при переполнении */
+            background: white;
+            border-radius: 1.2rem;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.1s ease;
+            box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-width: 0;          /* помогает с текстом при сильном сжатии */
+            word-break: break-word;
+        }
+
+        /* Цвета для разных блоков (для наглядности) */
+        .item-1 { background: #ffe4e2; border-bottom: 4px solid #ef4444; width:100px}
+        .item-2 { background: #dcfce7; border-bottom: 4px solid #22c55e; }
+        .item-3 { background: #fff3ce; border-bottom: 4px solid #f59e0b; }
+        .item-4 { background: #e0f2fe; border-bottom: 4px solid #0ea5e9; }
+
+        .item-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .grow-badge {
+            background: rgba(0,0,0,0.05);
+            backdrop-filter: blur(2px);
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace, system-ui;
+            color: #0f172a;
+            margin-top: 0.4rem;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        /* панель управления */
+        .controls {
+            background: #f8fafc;
+            border-radius: 1.5rem;
+            padding: 1.5rem 1rem 1.5rem 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .controls-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+        }
+
+        .input-card {
+            flex: 1;
+            min-width: 140px;
+            background: white;
+            border-radius: 1.2rem;
+            padding: 0.9rem 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .input-card label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.65rem;
+            font-size: 0.9rem;
+        }
+
+        .color-badge {
+            width: 18px;
+            height: 18px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .input-card input {
+            width: 100%;
+            padding: 0.6rem 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 1rem;
+            background: white;
+            transition: 0.15s;
+            font-family: monospace;
+        }
+
+        .input-card input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        .reset-btn {
+            background: #1e293b;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.7rem 1.6rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .reset-btn:hover {
+            background: #0f172a;
+            transform: scale(0.97);
+        }
+
+        .note {
+            background: #fef9e3;
+            border-left: 5px solid #facc15;
+            padding: 0.7rem 1rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #92400e;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 720px) {
+            .demo-card {
+                padding: 1.2rem;
+            }
+            .flex-container {
+                gap: 0.8rem;
+                padding: 1rem;
+            }
+            .item-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="demo-card">
+    <h1>📐 Интерактивный flex-grow</h1>
+    <div class="sub">Меняйте значения — ширина блоков пересчитывается мгновенно. flex-grow управляет распределением свободного места.</div>
+
+    <!-- FLEX контейнер с 4 блоками -->
+    <div class="flex-container" id="flexContainer">
+        <div class="flex-item item-1" id="item1">
+            <div class="item-title">Блок 1</div>
+            <div class="grow-badge" id="growValue1">flex-grow: 1</div>
+        </div>
+        <div class="flex-item item-2" id="item2">
+            <div class="item-title">Блок 2</div>
+            <div class="grow-badge" id="growValue2">flex-grow: 1</div>
+        </div>
+        <div class="flex-item item-3" id="item3">
+            <div class="item-title">Блок 3</div>
+            <div class="grow-badge" id="growValue3">flex-grow: 1</div>
+        </div>
+        <div class="flex-item item-4" id="item4">
+            <div class="item-title">Блок 4</div>
+            <div class="grow-badge" id="growValue4">flex-grow: 1</div>
+        </div>
+    </div>
+
+    <!-- Панель ввода flex-grow для каждого блока -->
+    <div class="controls">
+        <div class="controls-grid">
+            <div class="input-card">
+                <label><span class="color-badge" style="background:#ef4444;"></span> Блок 1 · flex-grow</label>
+                <input type="number" id="growInput1" value="1" step="0.1" min="0" placeholder="число">
+            </div>
+            <div class="input-card">
+                <label><span class="color-badge" style="background:#22c55e;"></span> Блок 2 · flex-grow</label>
+                <input type="number" id="growInput2" value="1" step="0.1" min="0" placeholder="число">
+            </div>
+            <div class="input-card">
+                <label><span class="color-badge" style="background:#f59e0b;"></span> Блок 3 · flex-grow</label>
+                <input type="number" id="growInput3" value="1" step="0.1" min="0" placeholder="число">
+            </div>
+            <div class="input-card">
+                <label><span class="color-badge" style="background:#0ea5e9;"></span> Блок 4 · flex-grow</label>
+                <input type="number" id="growInput4" value="1" step="0.1" min="0" placeholder="число">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <button class="reset-btn" id="resetBtn">⟳ Сбросить все значения (1:1:1:1)</button>
+        </div>
+        <div class="note">
+            💡 <strong>Как работает flex-grow?</strong> Свободное пространство внутри контейнера распределяется между блоками пропорционально их flex-grow.<br>
+            ➤ Например: если у Блока1 = 1, Блока2 = 2, Блок3 = 1, Блок4 = 1 → Блок2 получит в 2 раза больше места, чем остальные.<br>
+            ✏️ Вводите любые числа (0, 0.5, 2, 3.7) — изменения применяются моментально.
+        </div>
+    </div>
+    <footer>
+        🧪 Каждый блок имеет flex-basis: 0%, поэтому размер зависит ТОЛЬКО от flex-grow. Меняйте значения и наблюдайте пропорции.
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // DOM элементы
+        const items = [
+            document.getElementById('item1'),
+            document.getElementById('item2'),
+            document.getElementById('item3'),
+            document.getElementById('item4')
+        ];
+        const growSpans = [
+            document.getElementById('growValue1'),
+            document.getElementById('growValue2'),
+            document.getElementById('growValue3'),
+            document.getElementById('growValue4')
+        ];
+        const inputs = [
+            document.getElementById('growInput1'),
+            document.getElementById('growInput2'),
+            document.getElementById('growInput3'),
+            document.getElementById('growInput4')
+        ];
+
+        // Вспомогательная функция: обновить flex-grow для одного элемента (индекс i)
+        // значение value — число (уже валидированное)
+        function setFlexGrowForIndex(i, value) {
+            if (!items[i]) return;
+            // Применяем CSS свойство flex-grow напрямую к элементу (инлайн стиль)
+            items[i].style.flexGrow = value;
+            // Обновляем текстовый индикатор внутри блока
+            if (growSpans[i]) {
+                // Форматируем число: убираем лишние нули, но показываем дробную часть если нужно
+                let displayValue = value;
+                if (Number.isInteger(value)) {
+                    displayValue = value;
+                } else {
+                    displayValue = parseFloat(value.toFixed(4)); // аккуратное округление
+                }
+                growSpans[i].innerText = `flex-grow: ${displayValue}`;
+            }
+        }
+
+        // Валидация и нормализация числа из input
+        function getValidatedNumber(inputElement) {
+            let raw = inputElement.value.trim();
+            if (raw === "") raw = "0";
+            let parsed = parseFloat(raw);
+            // Если NaN или отрицательное (хотя min=0 защищает, но на всякий случай)
+            if (isNaN(parsed)) parsed = 0;
+            if (parsed < 0) parsed = 0;
+            // Дополнительно: ограничим не слишком большим, но flex-grow может быть любым >0, оставим как есть
+            // но покажем без странной точности
+            return parsed;
+        }
+
+        // Обновление конкретного блока по индексу на основе текущего значения в input
+        function updateFromInput(index) {
+            const input = inputs[index];
+            if (!input) return;
+            let validValue = getValidatedNumber(input);
+            // синхронизируем поле ввода с корректным значением (на случай если там было не число)
+            if (input.value !== String(validValue)) {
+                input.value = validValue;
+            }
+            // Применяем flex-grow к элементу
+            setFlexGrowForIndex(index, validValue);
+        }
+
+        // События для всех полей ввода: при любом изменении (ввод, стрелки, вставка)
+        function bindEvents() {
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                if (!input) continue;
+                // Используем 'input' для мгновенного применения при печати
+                input.addEventListener('input', (function(idx) {
+                    return function() {
+                        updateFromInput(idx);
+                    };
+                })(i));
+                // Дополнительно 'change' на случай, если после ручного ввода потеря фокуса
+                input.addEventListener('change', (function(idx) {
+                    return function() {
+                        updateFromInput(idx);
+                    };
+                })(i));
+            }
+        }
+
+        // Установить начальные значения flex-grow (1 для всех)
+        function initDefaultValues() {
+            for (let i = 0; i < items.length; i++) {
+                // Ставим инлайн-стиль flexGrow = 1
+                items[i].style.flexGrow = "1";
+                // обновляем спаны
+                if (growSpans[i]) growSpans[i].innerText = "flex-grow: 1";
+                // синхронизируем инпуты: значение 1
+                if (inputs[i]) inputs[i].value = "1";
+            }
+        }
+
+        // Сброс всех значений до 1
+        function resetAllToOne() {
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i]) {
+                    inputs[i].value = "1";
+                    // принудительно вызываем обновление через ту же логику
+                    updateFromInput(i);
+                }
+            }
+        }
+
+        // Дополнительно: гарантия, что при изменении размера окна или любых анимациях
+        // значения остаются корректными (уже работает через инлайн-стили)
+        // также если потребуется "сброс стилей" — кнопка reset
+
+        // Инициализация: ставим значения по умолчанию, затем навешиваем обработчики
+        function init() {
+            // Убедимся, что flex-basis: 0% и flex-shrink заданы в CSS, а мы управляем flex-grow
+            // Дополнительно можно добавить inline fallback, но класс уже содержит flex-basis: 0%;
+            // Чтобы избежать конфликта: сбросим возможные предыдущие инлайны
+            for (let i = 0; i < items.length; i++) {
+                items[i].style.flexGrow = "";
+            }
+            // Установка начальных значений (1 для каждого)
+            initDefaultValues();
+            // Привязка событий к инпутам
+            bindEvents();
+            // Кнопка сброса
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    resetAllToOne();
+                });
+            }
+            // Небольшой фикс для отображения: при загрузке вызываем обновление всех инпутов,
+            // чтобы точно синхронизировать отображение и спаны.
+            for (let i = 0; i < inputs.length; i++) {
+                updateFromInput(i);
+            }
+        }
+
+        // Запускаем инициализацию после полной загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
