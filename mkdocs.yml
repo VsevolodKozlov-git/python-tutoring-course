@@ -42,6 +42,9 @@ nav:
   - lesson32/lesson32.md
   - lesson33/lesson33.md
   - lesson34/lesson34.md
+  - lesson35/lesson35.md
+  - lesson36/lesson36.md
+  - lesson37_htmlcss_project/lesson37.md
 
 markdown_extensions:
   - admonition
