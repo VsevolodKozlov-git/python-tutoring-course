@@ -46,6 +46,7 @@ nav:
   - lesson36/lesson36.md
   - lesson37_htmlcss_project/lesson37.md
   - lesson38/lesson38.md
+  - lesson39/lesson39.md
 
 markdown_extensions:
   - admonition
