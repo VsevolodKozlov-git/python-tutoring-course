@@ -48,6 +48,8 @@ nav:
   - lesson38/lesson38.md
   - lesson39/lesson39.md
   - lesson40/lesson40.md
+  - lesson41/lesson41.md
+  - lesson42/lesson42.md
 
 markdown_extensions:
   - admonition
