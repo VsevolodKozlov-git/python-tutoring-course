@@ -51,6 +51,7 @@ nav:
   - lesson41/lesson41.md
   - lesson42/lesson42.md
   - lesson43/lesson43.md
+  - lesson44/lesson44.md
 
 markdown_extensions:
   - admonition
