@@ -235,6 +235,8 @@ const getCharacters = async () => {
 
 ## Домашнее задание
 
+[Github с кодом занятия](https://github.com/VsevolodKozlov-git/vue-tutoring-demo-project)
+
 1. Установите Nuxt UI в свой Vue-проект (или создайте новый проект с Nuxt UI).
 2. Создайте форму и таблицу, аналогичную разобранной, но для создания продукта из прошлого домашнего задания
    1. Помимо компонент из урока вам потребуется [UInput](https://ui.nuxt.com/docs/components/input) 
