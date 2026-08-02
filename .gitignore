@@ -65,7 +65,11 @@ target/
 # virtualenv
 venv/
 ENV/
+.venv/
 
 # MkDocs documentation
 site*/
 .idea
+
+# Vs code
+.vscode
