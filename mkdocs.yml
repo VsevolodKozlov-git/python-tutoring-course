@@ -55,6 +55,8 @@ nav:
   - lesson45/lesson45.md
   - lesson46/lesson46.md
   - lesson47/lesson47.md
+  - lesson48_study/lesson48_study.md
+  - lesson48_project/lesson48.md
 
 markdown_extensions:
   - admonition
