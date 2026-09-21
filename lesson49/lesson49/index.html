@@ -1,0 +1,3198 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../lesson48_project/lesson48/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Урок 49. Аутентификация: хеширование паролей и JWT - Python-tutoring</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#49-jwt" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python-tutoring" class="md-header__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python-tutoring
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Урок 49. Аутентификация: хеширование паролей и JWT
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python-tutoring" class="md-nav__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python-tutoring
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson1/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 1. Что такое python и с чем его едят?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson2/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 2. Запуск кода и переменные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson3/lesson3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 3. Функции и строковые методы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson4/lesson4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 4. Числа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson5/lesson5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 5. Функции, области видимости и циклы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson6/lesson6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 6. Циклы и условия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson7/lesson7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 7. Как решать задачи?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson8/lesson8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 8. Рандом, списки, 2 кортежа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson9/lesson9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 9. Списки и словари
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson10/lesson10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 10. Коты и O-большое
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson11/lesson11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Идеи для проектов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12/lesson12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 12. ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12_modules/lesson12_modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 13. ООП и модули
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson14/lesson14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 14. Работа с файловой системой
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson15_read_files/lesson15_read_files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чтение и запись файлов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson16_modules_minecraft/lesson16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 16. Установка модулей и minecraft
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson17/lesson17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 17. Представление цвета в компьютере и работа с изображениями в Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson18/lesson18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 18. Змейка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson19/lesson19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 19. Решаем задачи из ОГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson20/lesson20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 20. Решаем 17 из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson21/lesson21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 21. Продолжаем решать 17 из ЕГЭ и смотрим на 24-е
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson22/lesson22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 22. Префиксные суммы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson23/lesson23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 23. Упрощенное 24-е задание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson24/lesson24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 24. Мы дошли до решения 24-го из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson25/lesson25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 25. Другой тип 24-го из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson26/lesson26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 26. Собираем данные с сайтов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson27/lesson27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 27. Путешествуем по сайту, собираем данные, сохраняем в файл
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson28/lesson28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 28. Обработка текста
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson29/lesson29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 29. Преобразуем текст в векторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson30/lesson30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 30. Сравниваем тексты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson31/lesson31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 31. TF-IDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson32/lesson32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 32. На чем стоит веб-программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson33/lesson33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 33. Основы HTML: часть 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson34/lesson34/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 34. Основы HTML: часть 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson35/lesson35/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 35. Основы CSS: часть 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson36/lesson36/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 36. Основы CSS: часть 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson37_htmlcss_project/lesson37/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Техническое задание: Персональное портфолио
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson38/lesson38/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 38. Сравнение JavaScript и Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson39/lesson39/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 39. JavaScript 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson40/lesson40/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 40. Vue.JS урок 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson41/lesson41/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 41. Vue.JS урок 2, закрепляем на практике
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson42/lesson42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 42. Vue: props, slots и работа с API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson43/lesson43/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 43. API: Авторизация, фильтрация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson44/lesson44/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 44. POST, DELETE и Хуки жизненного цикла
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson45/lesson45/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 45. UI-киты на примере Nuxt UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson46/lesson46/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок. FastAPI: создание API на Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson47/lesson47/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок: Pydantic — валидация и конвертация данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson48_study/lesson48_study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 48 (подготовка). Переменные окружения, HTTP-запросы и даты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson48_project/lesson48/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 48. Проект: Дашборд игры в Steam
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 49. Аутентификация: хеширование паролей и JWT
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 49. Аутентификация: хеширование паролей и JWT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 0. Аутентификация и авторизация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 0. Аутентификация и авторизация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Аналогия из жизни
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Определения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужна аутентификация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужна авторизация
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 1. Криптография
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 1. Криптография">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Хеширование паролей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Хеширование паролей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое хеш-функция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему нельзя хранить пароли в открытом виде
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-pwdlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как делать в Python — библиотека pwdlib
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-jwt-json-web-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 JWT (JSON Web Token)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 JWT (JSON Web Token)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что это
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевая идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hs256" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритм HS256
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что внутри токена
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-pyjwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как делать в Python — библиотека pyjwt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что происходит при ошибке
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 2. Паттерны проектирования
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 2. Паттерны проектирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Singleton через модуль
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Singleton через модуль">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое singleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужен singleton в нашем случае
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Простейший singleton в Python — код на уровне модуля
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: конфигурация аутентификации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Абстракции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Абстракции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое абстракция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это в нашем проекте
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Абстрактный класс в Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоги
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Домашнее задание
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Домашнее задание">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 1. Хеширование и проверка пароля (~5 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-jwt-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 2. Создание и декодирование JWT (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 3. Неверный секретный ключ (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 4. Просроченный токен (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-utilsauth-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 5. Модуль utils/auth (~20 мин)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задание 5. Модуль utils/auth (~20 мин)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auth_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_tokendata-dict-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_token(data: dict) -&gt; str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decode_tokentoken-str-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_token(token: str) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_hashed_passwordpassword-str-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_hashed_password(password: str) -&gt; str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is_hashed_equalplain_password-str-hashed_password-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_hashed_equal(plain_password: str, hashed_password: str) -&gt; bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверка
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-userjson-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 6. Класс UserJson (~15 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 0. Аутентификация и авторизация
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 0. Аутентификация и авторизация">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Аналогия из жизни
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Определения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужна аутентификация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужна авторизация
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 1. Криптография
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 1. Криптография">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Хеширование паролей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Хеширование паролей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое хеш-функция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему нельзя хранить пароли в открытом виде
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-pwdlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как делать в Python — библиотека pwdlib
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-jwt-json-web-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 JWT (JSON Web Token)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 JWT (JSON Web Token)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что это
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевая идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hs256" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритм HS256
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что внутри токена
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-pyjwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как делать в Python — библиотека pyjwt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что происходит при ошибке
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 2. Паттерны проектирования
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 2. Паттерны проектирования">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Singleton через модуль
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 Singleton через модуль">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое singleton
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужен singleton в нашем случае
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Простейший singleton в Python — код на уровне модуля
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример: конфигурация аутентификации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Абстракции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Абстракции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое абстракция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это в нашем проекте
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Абстрактный класс в Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоги
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Домашнее задание
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Домашнее задание">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 1. Хеширование и проверка пароля (~5 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-jwt-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 2. Создание и декодирование JWT (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 3. Неверный секретный ключ (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 4. Просроченный токен (~10 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-utilsauth-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 5. Модуль utils/auth (~20 мин)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Задание 5. Модуль utils/auth (~20 мин)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auth_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_tokendata-dict-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_token(data: dict) -&gt; str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decode_tokentoken-str-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_token(token: str) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_hashed_passwordpassword-str-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_hashed_password(password: str) -&gt; str
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is_hashed_equalplain_password-str-hashed_password-str-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        is_hashed_equal(plain_password: str, hashed_password: str) -&gt; bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Проверка
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-userjson-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 6. Класс UserJson (~15 мин)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="49-jwt">Урок 49. Аутентификация: хеширование паролей и JWT</h1>
+<p>В этом уроке мы разберём фундамент, на котором строится аутентификация в FastAPI: хеширование паролей и JWT-токены. Вы узнаете, чем аутентификация отличается от авторизации, почему пароли нельзя хранить в открытом виде и как сервер гарантирует, что токен не подделан.</p>
+<hr />
+<h2 id="0">Часть 0. Аутентификация и авторизация</h2>
+<h3 id="_1">Аналогия из жизни</h3>
+<p>Представьте ночной клуб. На входе стоит охранник:</p>
+<ol>
+<li>Вы показываете паспорт. Охранник сверяет фото с лицом — <strong>это аутентификация</strong>. Охранник отвечает на вопрос: <em>«Кто ты?»</em></li>
+<li>Вы прошли внутрь. Но в конце коридора — дверь с надписью «VIP». Ваш браслет — обычный зелёный, а VIP-зона требует золотой. Вас не пускают — <strong>это авторизация</strong>. Система отвечает на вопрос: <em>«Что тебе можно?»</em></li>
+</ol>
+<h3 id="_2">Определения</h3>
+<p><strong>Аутентификация</strong> — проверка, что пользователь — тот, за кого себя выдаёт. Обычно это проверка логина и пароля.</p>
+<p><strong>Авторизация</strong> — проверка, что аутентифицированный пользователь имеет право выполнить действие или получить доступ к ресурсу. Например: обычный пользователь не может удалить чужой пост, а администратор — может.</p>
+<h3 id="_3">Зачем нужна аутентификация</h3>
+<p>Без аутентификации сервер не знает, кто делает запрос. Любой мог бы представиться кем угодно. Аутентификация привязывает запрос к конкретному пользователю.</p>
+<h3 id="_4">Зачем нужна авторизация</h3>
+<p>Даже если сервер знает, кто вы, не каждый пользователь должен иметь доступ ко всему. Авторизация разграничивает права: одни эндпоинты доступны всем, другие — только администраторам, третьи — только владельцу ресурса.</p>
+<p><strong>Упражнение:</strong></p>
+<p>К какой категории относится каждая ситуация — аутентификация или авторизация?</p>
+<ol>
+<li>Пользователь вводит логин и пароль, чтобы войти в систему.</li>
+<li>Сервер проверяет, что пользователь с ролью <code>guest</code> не может удалить статью.</li>
+<li>Сервер проверяет, что токен в запросе действительно подписан секретным ключом.</li>
+</ol>
+<details>
+<summary>Ответ</summary>
+
+1. Аутентификация — проверка личности.
+2. Авторизация — проверка прав.
+3. Аутентификация — проверка, что токен подлинный (значит, пользователь — тот, за кого себя выдаёт).
+</details>
+
+<hr />
+<h2 id="1">Часть 1. Криптография</h2>
+<h3 id="11">1.1 Хеширование паролей</h3>
+<h4 id="-">Что такое хеш-функция</h4>
+<p>Хеш-функция — это функция, которая принимает произвольную строку и возвращает строку фиксированной длины. Важно: хеш-функция <strong>односторонняя</strong> — из хеша нельзя восстановить исходную строку.</p>
+<p><strong>Аналогия:</strong> хеш-функция — как мясорубка. Закинули кусок мяса (пароль) — получили фарш (хеш). Из фарша собрать обратно кусок мяса невозможно. Но если закинуть тот же кусок мяса снова — получится точно такой же фарш. Поэтому хеш можно использовать для проверки: «тот же пароль или нет» — не зная самого пароля.</p>
+<p>Пример хеша (встроенная функция <code>hash</code> в Python для демонстрации принципа):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># 1234567890123456789 (число, разное на каждом запуске Python)</span>
+</span></code></pre></div>
+<p><code>hash()</code> в Python — нестабильная функция (результат меняется между запусками). Для паролей используют специальные криптографические хеш-функции, которые дают одинаковый результат на любом компьютере.</p>
+<h4 id="_5">Почему нельзя хранить пароли в открытом виде</h4>
+<p>Представьте, что вы храните пароли в базе данных как есть:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>users table:
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  username | password
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  alice    | qwerty123
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  bob      | ilovedogs
+</span></code></pre></div>
+<p>Если база утечёт (а утечки случаются) — все пароли скомпрометированы. Пользователи часто используют один и тот же пароль на нескольких сервисах. Утечка пароля от вашего сайта = доступ к почте, соцсетям, банку.</p>
+<p>Если же хранить хеши:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>users table:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  username | password_hash
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  alice    | $argon2id$v=19$m=...
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  bob      | $argon2id$v=19$m=...
+</span></code></pre></div>
+<p>То при утечке базы злоумышленник получит набор хешей. Восстановить из них пароли невозможно (мясорубка не работает в обратную сторону). Сервер при этом может проверить пароль при входе: захешировать введённый пароль и сравнить с хешем из базы.</p>
+<h4 id="python-pwdlib">Как делать в Python — библиотека <code>pwdlib</code></h4>
+<p><strong>Документация:</strong> <a href="https://pypi.org/project/pwdlib/">pwdlib on PyPI</a></p>
+<p>Установка:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pwdlib<span class="o">[</span>argon2<span class="o">]</span>
+</span></code></pre></div>
+<p><code>pwdlib</code> предоставляет два метода:</p>
+<ul>
+<li><code>hash(password)</code> — получить хеш для хранения</li>
+<li><code>verify(plain, hashed)</code> — проверить, что введённый пароль соответствует хешу</li>
+</ul>
+<p>Пример:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pwdlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">PasswordHash</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">password_hasher</span> <span class="o">=</span> <span class="n">PasswordHash</span><span class="o">.</span><span class="n">recommended</span><span class="p">()</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">hashed</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">hashed</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># $argon2id$v=19$m=65536,t=3,p=4$...</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">is_correct</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">,</span> <span class="n">hashed</span><span class="p">)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">is_correct</span><span class="p">)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># True</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="n">is_wrong</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;wrongpassword&quot;</span><span class="p">,</span> <span class="n">hashed</span><span class="p">)</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">is_wrong</span><span class="p">)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="c1"># False</span>
+</span></code></pre></div>
+<p>Обратите внимание: <code>verify</code> не выбрасывает ошибку при неверном пароле — он возвращает <code>False</code>. Ошибка выбрасывается только при проблемах с самим хешем (повреждён, неверный формат).</p>
+<p>Интересный момент: если захешировать один и тот же пароль дважды, хеши будут <strong>разными</strong>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">hash1</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">hash2</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">hash1</span> <span class="o">==</span> <span class="n">hash2</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># False</span>
+</span></code></pre></div>
+<p>Это не баг — это <strong>соль</strong> (salt). К каждому паролю при хешировании добавляется случайная строка, которая хранится прямо внутри хеша. Поэтому хеши разные, но <code>verify</code> всё равно работает:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">print</span><span class="p">(</span><span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">,</span> <span class="n">hash1</span><span class="p">))</span>  <span class="c1"># True</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;mypassword&quot;</span><span class="p">,</span> <span class="n">hash2</span><span class="p">))</span>  <span class="c1"># True</span>
+</span></code></pre></div>
+<p>Соль защищает от атак по радужным таблицам — заранее вычисленным хешам популярных паролей. С солью каждый хеш уникален, даже для одинаковых паролей.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Что выведет этот код?</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">hashed</span> <span class="o">=</span> <span class="n">password_hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;secret&quot;</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="n">hashed</span><span class="p">))</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">password_hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;SECRET&quot;</span><span class="p">,</span> <span class="n">hashed</span><span class="p">))</span>
+</span></code></pre></div>
+<details>
+<summary>Ответ</summary>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>True
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>False
+</span></code></pre></div>
+
+Хеширование чувствительно к регистру. `"secret"` и `"SECRET"` — разные пароли.
+</details>
+
+<hr />
+<h3 id="12-jwt-json-web-token">1.2 JWT (JSON Web Token)</h3>
+<h4 id="_6">Что это</h4>
+<p>JWT — это строка, в которой хранятся данные и подпись. Сервер создаёт токен, кладёт в него нужные данные (например, имя пользователя) и подписывает своим секретным ключом. Клиент получает токен и отправляет его с каждым запросом. Сервер проверяет подпись — если она верна, данные в токене можно доверять.</p>
+<p><strong>Аналогия из жизни:</strong> JWT — как печать в паспорте. Печать ставится секретным клише (секретный ключ). Видеть печать может кто угодно, но подделать без клише невозможно. Сервер — единственный, у кого есть клише.</p>
+<h4 id="_7">Ключевая идея</h4>
+<p>Сервер подписывает токен секретным ключом. Проверить токен может только тот, кто знает ключ. Без секретного ключа подделать подпись невозможно.</p>
+<h4 id="hs256">Алгоритм HS256</h4>
+<p>В этом курсе мы будем использовать алгоритм <code>HS256</code> — это надёжный симметричный алгоритм. Под капотом он использует один и тот же секретный ключ для подписи и для проверки. Детали реализации не так важны — главное понимать: без ключа подделать токен нельзя.</p>
+<h4 id="_8">Что внутри токена</h4>
+<p>В payload (данные токена) мы кладём поля:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Название</th>
+<th>Что значит</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sub</code></td>
+<td>Subject</td>
+<td>Идентификатор пользователя. Мы кладём туда <code>username</code></td>
+</tr>
+<tr>
+<td><code>iat</code></td>
+<td>Issued At</td>
+<td>Когда токен выдан (unix-timestamp)</td>
+</tr>
+<tr>
+<td><code>exp</code></td>
+<td>Expiration</td>
+<td>Когда токен истекает (unix-timestamp)</td>
+</tr>
+</tbody>
+</table>
+<p><code>pyjwt</code> автоматически проверяет <code>exp</code> при декодировании. Если токен просрочен — <code>decode</code> выбросит ошибку, вам не нужно проверять это вручную.</p>
+<h4 id="python-pyjwt">Как делать в Python — библиотека <code>pyjwt</code></h4>
+<p><strong>Документация:</strong> <a href="https://pypi.org/project/PyJWT/">PyJWT on PyPI</a></p>
+<p>Установка:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pyjwt
+</span></code></pre></div>
+<p>Создание токена — <code>jwt.encode(payload, secret, algorithm)</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">jwt</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s2">&quot;my-super-secret-key&quot;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="s2">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;alice&quot;</span><span class="p">,</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="s2">&quot;iat&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(),</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">3600</span><span class="p">))</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(),</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">}</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;HS256&quot;</span><span class="p">)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="c1"># eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGljZSIsIml...</span>
+</span></code></pre></div>
+<p>Проверка и чтение токена — <code>jwt.decode(token, secret, algorithms)</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">decoded</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HS256&quot;</span><span class="p">])</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1"># {&#39;sub&#39;: &#39;alice&#39;, &#39;iat&#39;: 1700000000.0, &#39;exp&#39;: 1700003600.0}</span>
+</span></code></pre></div>
+<p>Обратите внимание: <code>algorithms</code> передаётся <strong>списком</strong>, даже если алгоритм один. Это защита от уязвимостей, когда атакующий указывает другой алгоритм в header.</p>
+<h4 id="_9">Что происходит при ошибке</h4>
+<p>Если токен подделан (другой секретный ключ) — <code>jwt.decode</code> выбрасывает <code>PyJWTError</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s2">&quot;wrong-secret-key&quot;</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HS256&quot;</span><span class="p">])</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWTError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Токен недействителен:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="c1"># Токен недействителен: Signature verification failed</span>
+</span></code></pre></div>
+<p>Если токен просрочен — <code>jwt.ExpiredSignatureError</code> (наследник <code>PyJWTError</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">expired_payload</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="s2">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;alice&quot;</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="s2">&quot;iat&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(),</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(),</span>  <span class="c1"># уже истёк</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">}</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">expired_token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">expired_payload</span><span class="p">,</span> <span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;HS256&quot;</span><span class="p">)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">expired_token</span><span class="p">,</span> <span class="n">SECRET_KEY</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HS256&quot;</span><span class="p">])</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">ExpiredSignatureError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Токен просрочен:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    <span class="c1"># Токен просрочен: Signature has expired</span>
+</span></code></pre></div>
+<hr />
+<h2 id="2">Часть 2. Паттерны проектирования</h2>
+<h3 id="21-singleton">2.1 Singleton через модуль</h3>
+<h4 id="singleton">Что такое singleton</h4>
+<p>Singleton — это паттерн проектирования, который гарантирует, что у класса существует <strong>только один экземпляр</strong> на всё приложение.</p>
+<p><strong>Аналогия:</strong> пульт от телевизора в квартире. Кто бы ни попросил пульт — всем дают один и тот же. Не существует двух пультов от одного телевизора. Если кто-то переключил канал — это видят все, потому что пульт один.</p>
+<h4 id="singleton_1">Зачем нужен singleton в нашем случае</h4>
+<p>В проекте есть конфигурация: секретный ключ, алгоритм, срок жизни токена. Эти данные читаются из <code>.env</code> один раз при старте приложения. Нет смысла создавать конфиг заново в каждом модуле — это лишняя работа и потенциальные расхождения. Нужен один объект, доступный всем.</p>
+<h4 id="singleton-python">Простейший singleton в Python — код на уровне модуля</h4>
+<p>В Python модуль выполняется <strong>один раз</strong> при первом <code>import</code>. Результат кешируется в <code>sys.modules</code>. Все последующие импорты получают уже загруженный модуль. Это значит, что любой объект, созданный на уровне модуля (не внутри функции, не внутри класса), автоматически становится singleton.</p>
+<p>Можно реализовать singleton через класс с <code>__new__</code> или метакласс, но для нашего случая это оверинжиниринг. Код на уровне модуля — самый простой и идиоматичный способ в Python.</p>
+<h4 id="_10">Пример: конфигурация аутентификации</h4>
+<p>Создадим файл <code>config.py</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">load_dotenv</span><span class="p">()</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">AuthConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">SECRET_KEY</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    <span class="n">ALGORITHM</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HS256&quot;</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="n">EXP_DATE</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3600</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="n">auth_config</span> <span class="o">=</span> <span class="n">AuthConfig</span><span class="p">(</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    <span class="n">SECRET_KEY</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SECRET_KEY&quot;</span><span class="p">),</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>    <span class="n">ALGORITHM</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ALGORITHM&quot;</span><span class="p">,</span> <span class="s2">&quot;HS256&quot;</span><span class="p">),</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>    <span class="n">EXP_DATE</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;EXP_DATE&quot;</span><span class="p">,</span> <span class="s2">&quot;3600&quot;</span><span class="p">)),</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Файл <code>.env</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>SECRET_KEY=my-super-secret-key
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>ALGORITHM=HS256
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>EXP_DATE=3600
+</span></code></pre></div>
+<p>Теперь в любом другом модуле можно импортировать <code>auth_config</code> и получить тот же самый объект:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">config</span><span class="w"> </span><span class="kn">import</span> <span class="n">auth_config</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">auth_config</span><span class="p">)</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># SECRET_KEY=&#39;my-super-secret-key&#39; ALGORITHM=&#39;HS256&#39; EXP_DATE=3600</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">auth_config</span><span class="o">.</span><span class="n">SECRET_KEY</span><span class="p">)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># my-super-secret-key</span>
+</span></code></pre></div>
+<p>Что здесь происходит:</p>
+<ol>
+<li>При первом <code>from config import auth_config</code> Python выполняет <code>config.py</code> целиком: <code>load_dotenv()</code> читает <code>.env</code>, создаётся <code>AuthConfig</code>, переменной <code>auth_config</code> присваивается экземпляр.</li>
+<li>При следующем импорте <code>config</code> из другого модуля Python находит модуль в кеше <code>sys.modules</code> и не выполняет его повторно. Все получают тот же объект <code>auth_config</code>.</li>
+</ol>
+<p>Pydantic здесь даёт бонус: если <code>SECRET_KEY</code> не будет найден в <code>.env</code>, <code>os.getenv</code> вернёт <code>None</code>, и Pydantic выбросит <code>ValidationError</code> ещё при импорте модуля — ошибка всплывёт сразу, а не в рантайме.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Если модуль <code>config</code> импортируют из двух разных файлов, создастся два экземпляра <code>auth_config</code> или один? Почему?</p>
+<details>
+<summary>Ответ</summary>
+
+Один. Python выполняет модуль один раз при первом импорте и кеширует результат в `sys.modules`. При втором импорте модуль не выполняется заново — возвращается уже загруженный модуль с тем же объектом `auth_config`.
+</details>
+
+<hr />
+<h3 id="22">2.2 Абстракции</h3>
+<h4 id="_11">Что такое абстракция</h4>
+<p>Абстракция — это когда мы описываем <strong>что</strong> должен делать объект, но не <strong>как</strong> он это делает. Код, который использует объект, работает с интерфейсом и не знает о деталях реализации.</p>
+<p><strong>Аналогия:</strong> розетка. Форма стандартизирована — это интерфейс. Что за стеной — медный провод, алюминиевый, подстанция на другом конце города — неважно. Любой прибор работает с любой розеткой, потому что интерфейс одинаковый.</p>
+<h4 id="_12">Зачем это в нашем проекте</h4>
+<p>В проекте нужно хранить пользователей. Сейчас можно хранить их в списке в памяти. Потом — в файле. Ещё потом — в базе данных. Если код, который работает с хранилищем, завязан на конкретную реализацию (список), при переходе на базу данных придётся переписывать всё. Если код работает с абстракцией — достаточно создать новый класс с той же реализацией интерфейса.</p>
+<h4 id="python">Абстрактный класс в Python</h4>
+<p>Python предоставляет модуль <code>abc</code> (abstract base classes) для создания абстрактных классов. Абстрактный класс нельзя создать напрямую — можно только унаследоваться от него и реализовать все абстрактные методы.</p>
+<p>Создадим абстрактный класс <code>UserStorage</code> — он описывает, что умеет хранилище пользователей, но не как:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">UserStorage</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="nd">@abstractmethod</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="o">...</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="nd">@abstractmethod</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>        <span class="o">...</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="nd">@abstractmethod</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>        <span class="n">password_hashed</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>        <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>        <span class="n">second_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<p>Теперь создадим конкретную реализацию — <code>UserDict</code>, который хранит пользователей в <code>list[dict]</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">UserDict</span><span class="p">(</span><span class="n">UserStorage</span><span class="p">):</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">:</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>            <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">username</span><span class="p">:</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>                <span class="k">return</span> <span class="n">user</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">username</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="p">)</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>        <span class="n">password_hashed</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>        <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>        <span class="n">second_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>        <span class="n">user</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>            <span class="s1">&#39;password_hashed&#39;</span><span class="p">:</span> <span class="n">password_hashed</span><span class="p">,</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>            <span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="n">first_name</span><span class="p">,</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>            <span class="s1">&#39;second_name&#39;</span><span class="p">:</span> <span class="n">second_name</span><span class="p">,</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a>        <span class="p">}</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a>        <span class="k">return</span> <span class="n">user</span>
+</span></code></pre></div>
+<p>Теперь напишем функцию, которая работает с хранилищем. Она принимает <code>UserStorage</code> — абстрактный тип:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">print_user_info</span><span class="p">(</span><span class="n">storage</span><span class="p">:</span> <span class="n">UserStorage</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Работает с абстракцией — не знает, откуда берутся данные.&quot;&quot;&quot;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">storage</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Пользователь </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2"> не найден&quot;</span><span class="p">)</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        <span class="k">return</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">user</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_by_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;second_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="n">storage</span> <span class="o">=</span> <span class="n">UserDict</span><span class="p">()</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="n">storage</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;alice&quot;</span><span class="p">,</span> <span class="s2">&quot;hash123&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Smith&quot;</span><span class="p">)</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="n">print_user_info</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;alice&quot;</span><span class="p">)</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="c1"># Alice Smith</span>
+</span></code></pre></div>
+<p><code>print_user_info</code> принимает <code>UserStorage</code> — абстрактный тип. Функция не знает и не должна знать, откуда приходят данные: из списка в памяти, из файла, из базы данных. Она просто вызывает <code>exists</code> и <code>get_by_username</code> — они есть в любом наследнике <code>UserStorage</code>.</p>
+<p>Позже можно создать <code>UserJson(UserStorage)</code> с хранением в файле или <code>UserDatabase(UserStorage)</code> с обращением к базе данных — функция <code>print_user_info</code> не изменится.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Если создать класс <code>UserJson(UserStorage)</code> с хранением в файле, нужно ли переписывать функцию <code>print_user_info</code>? Почему?</p>
+<details>
+<summary>Ответ</summary>
+
+Нет. `print_user_info` принимает `UserStorage` — абстрактный тип. `UserJson` наследуется от `UserStorage`, поэтому его можно передать в функцию. Функция вызывает `exists` и `get_by_username` — они есть в любом наследнике. Это и есть сила абстракции: код работает с интерфейсом, а не с реализацией.
+</details>
+
+<hr />
+<h2 id="_13">Итоги</h2>
+<ul>
+<li><strong>Аутентификация</strong> отвечает на вопрос «кто ты?», <strong>авторизация</strong> — «что тебе можно?». Сначала аутентификация, потом авторизация.</li>
+<li>Пароли нельзя хранить в открытом виде. Хеш-функция необратима: из хеша нельзя восстановить пароль, но можно проверить совпадение.</li>
+<li><code>pwdlib</code> предоставляет <code>hash()</code> для получения хеша и <code>verify()</code> для проверки пароля. Одинаковые пароли дают разные хеши благодаря соли.</li>
+<li>JWT — строка с данными и подписью. Без секретного ключа подделать подпись невозможно. Мы используем <code>HS256</code> — надёжный симметричный алгоритм.</li>
+<li><code>sub</code> — идентификатор пользователя, <code>iat</code> — время выдачи, <code>exp</code> — срок истечения. <code>pyjwt</code> автоматически проверяет <code>exp</code>.</li>
+<li><code>jwt.encode()</code> создаёт токен, <code>jwt.decode()</code> проверяет и читает. Ошибки — <code>PyJWTError</code> (и <code>ExpiredSignatureError</code> как частный случай).</li>
+<li>Singleton через код на уровне модуля — простейший способ гарантировать один экземпляр объекта. Модуль в Python выполняется один раз, результат кешируется.</li>
+<li>Абстракция — описание <strong>что</strong> делает объект, а не <strong>как</strong>. Абстрактный класс задаёт интерфейс, наследники — реализацию. Код, работающий с абстракцией, не меняется при смене реализации.</li>
+</ul>
+<hr />
+<h2 id="_14">Домашнее задание</h2>
+<p>Ориентировочное время выполнения: ~1 час 15 минут. Задания расположены от простого к сложному.</p>
+<p>Материалы, которые пригодятся:</p>
+<ul>
+<li><a href="../../lesson48_study/lesson48_study/">Урок 48_study. .env, переменные окружения</a> — <code>load_dotenv()</code>, <code>os.getenv()</code></li>
+<li><a href="../../lesson47/lesson47/">Урок 47. Pydantic</a> — <code>BaseModel</code>, <code>model_validate</code>, <code>model_dump</code></li>
+<li><a href="../../lesson46/lesson46/">Урок 46. FastAPI</a> — эндпоинты, <code>HTTPException</code>, <code>Depends</code></li>
+</ul>
+<h3 id="1-5">Задание 1. Хеширование и проверка пароля (~5 мин)</h3>
+<p>Установите <code>pwdlib[argon2]</code>. Создайте <code>PasswordHash.recommended()</code>.</p>
+<ol>
+<li>Захешируйте пароль <code>"mysecret"</code>.</li>
+<li>Проверьте пароль <code>"mysecret"</code> через <code>verify</code> — должно вернуться <code>True</code>.</li>
+<li>Проверьте пароль <code>"wrong"</code> через <code>verify</code> — должно вернуться <code>False</code>.</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Ожидаемый вывод</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># True</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># False</span>
+</span></code></pre></div>
+<h3 id="2-jwt-10">Задание 2. Создание и декодирование JWT (~10 мин)</h3>
+<p>Установите <code>pyjwt</code>. Используйте <code>SECRET_KEY = "test-secret"</code>.</p>
+<ol>
+<li>Создайте payload с полями:</li>
+<li><code>sub</code>: <code>"bob"</code></li>
+<li><code>iat</code>: текущее время (<code>datetime.now().timestamp()</code>)</li>
+<li><code>exp</code>: текущее время + 1 час (<code>timedelta(seconds=3600)</code>)</li>
+<li>Создайте токен через <code>jwt.encode</code>.</li>
+<li>Декодируйте токен через <code>jwt.decode</code> и выведите результат.</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Ожидаемый вывод</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># {&#39;sub&#39;: &#39;bob&#39;, &#39;iat&#39;: 1700000000.0, &#39;exp&#39;: 1700003600.0}</span>
+</span></code></pre></div>
+<h3 id="3-10">Задание 3. Неверный секретный ключ (~10 мин)</h3>
+<ol>
+<li>Создайте токен с <code>SECRET_KEY = "correct-key"</code>.</li>
+<li>Попытайтесь декодировать его с <code>SECRET_KEY = "wrong-key"</code>.</li>
+<li>Перехватите <code>PyJWTError</code> и выведите сообщение об ошибке.</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Ожидаемый вывод</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># Токен недействителен: Signature verification failed</span>
+</span></code></pre></div>
+<h3 id="4-10">Задание 4. Просроченный токен (~10 мин)</h3>
+<ol>
+<li>Создайте payload с <code>exp</code> в прошлом (например, <code>datetime.now() - timedelta(seconds=1)</code>).</li>
+<li>Создайте токен и попытайтесь его декодировать.</li>
+<li>Перехватите <code>ExpiredSignatureError</code> и выведите сообщение об ошибке.</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Ожидаемый вывод</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># Токен просрочен: Signature has expired</span>
+</span></code></pre></div>
+<h3 id="5-utilsauth-20">Задание 5. Модуль <code>utils/auth</code> (~20 мин)</h3>
+<p>Создайте модуль <code>utils/auth.py</code>, который объединяет хеширование паролей и JWT в готовые функции. Структура модуля:</p>
+<h4 id="auth_config"><code>auth_config</code></h4>
+<p>Singleton-объект — экземпляр Pydantic-модели <code>AuthConfig</code>, наполненный данными из <code>.env</code>. Поля:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Источник</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SECRET_KEY</code></td>
+<td><code>SECRET_KEY</code> из <code>.env</code></td>
+<td>Секретный ключ для подписи JWT</td>
+</tr>
+<tr>
+<td><code>ALGORITHM</code></td>
+<td><code>ALGORITHM</code> из <code>.env</code></td>
+<td>Симметричный алгоритм (<code>HS256</code>)</td>
+</tr>
+<tr>
+<td><code>EXP_DATE</code></td>
+<td><code>EXP_DATE</code> из <code>.env</code></td>
+<td>Количество секунд до истечения токена</td>
+</tr>
+</tbody>
+</table>
+<p>Реализуется как код на уровне модуля (см. часть 2.1). Модель <code>AuthConfig</code> — наследник <code>BaseModel</code>.</p>
+<h4 id="get_tokendata-dict-str"><code>get_token(data: dict) -&gt; str</code></h4>
+<ul>
+<li>Добавляет в <code>data</code> поле <code>iat</code> — текущее время</li>
+<li>Добавляет в <code>data</code> поле <code>exp</code> — текущее время + <code>EXP_DATE</code> из <code>auth_config</code></li>
+<li>Подписывает токен при помощи <code>SECRET_KEY</code> и <code>ALGORITHM</code> из <code>auth_config</code></li>
+<li>Возвращает строку токена</li>
+</ul>
+<h4 id="decode_tokentoken-str-dict"><code>decode_token(token: str) -&gt; dict</code></h4>
+<ul>
+<li>Возвращает данные из токена</li>
+</ul>
+<h4 id="get_hashed_passwordpassword-str-str"><code>get_hashed_password(password: str) -&gt; str</code></h4>
+<ul>
+<li>Возвращает хеш пароля через <code>pwdlib</code></li>
+</ul>
+<h4 id="is_hashed_equalplain_password-str-hashed_password-str-bool"><code>is_hashed_equal(plain_password: str, hashed_password: str) -&gt; bool</code></h4>
+<ul>
+<li>Проверяет, что открытый пароль соответствует хешу, через <code>pwdlib</code></li>
+<li>Возвращает <code>True</code> или <code>False</code></li>
+</ul>
+<h4 id="_15">Проверка</h4>
+<p>Создайте файл <code>.env</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>SECRET_KEY=my-super-secret-key
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>ALGORITHM=HS256
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>EXP_DATE=3600
+</span></code></pre></div>
+<p>Убедитесь, что:</p>
+<ol>
+<li><code>get_hashed_password("test")</code> возвращает строку-хеш</li>
+<li><code>is_hashed_equal("test", ...)</code> с этим хешем возвращает <code>True</code></li>
+<li><code>get_token({"sub": "alice"})</code> возвращает строку токена</li>
+<li>Декодирование токена вручную через <code>jwt.decode</code> возвращает payload с <code>sub</code>, <code>iat</code>, <code>exp</code></li>
+<li>Попытка декодировать токен с другим секретным ключом выбрасывает <code>PyJWTError</code></li>
+</ol>
+<h3 id="6-userjson-15">Задание 6. Класс <code>UserJson</code> (~15 мин)</h3>
+<p>В уроке мы создали абстрактный класс <code>UserStorage</code> и реализацию <code>UserDict</code> с хранением в <code>list[dict]</code>. Реализуйте класс <code>UserJson(UserStorage)</code> — хранилище пользователей в JSON-файле.</p>
+<ol>
+<li><code>__init__(self, filepath: str)</code> — путь к JSON-файлу. Если файл не существует — создавать пустой список.</li>
+<li><code>get_by_username</code> — читать файл, искать пользователя по <code>username</code></li>
+<li><code>exists</code> — читать файл, проверять наличие</li>
+<li><code>create</code> — читать файл, дописать пользователя, записать обратно</li>
+</ol>
+<p><strong>Проверка:</strong></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">storage</span><span class="p">:</span> <span class="n">UserStorage</span> <span class="o">=</span> <span class="n">UserJson</span><span class="p">(</span><span class="s2">&quot;users.json&quot;</span><span class="p">)</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">storage</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;bob&quot;</span><span class="p">,</span> <span class="s2">&quot;hash456&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Jones&quot;</span><span class="p">)</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">storage</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;bob&quot;</span><span class="p">))</span>  <span class="c1"># True</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="n">print_user_info</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;bob&quot;</span><span class="p">)</span>  <span class="c1"># Bob Jones</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="c1"># Тот же код работает и с UserDict — ничего не меняем</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="n">storage2</span><span class="p">:</span> <span class="n">UserStorage</span> <span class="o">=</span> <span class="n">UserDict</span><span class="p">()</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="n">storage2</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;alice&quot;</span><span class="p">,</span> <span class="s2">&quot;hash123&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Smith&quot;</span><span class="p">)</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="n">print_user_info</span><span class="p">(</span><span class="n">storage2</span><span class="p">,</span> <span class="s2">&quot;alice&quot;</span><span class="p">)</span>  <span class="c1"># Alice Smith</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
