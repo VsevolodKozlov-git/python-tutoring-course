@@ -1,0 +1,2730 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../lesson49/lesson49/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Урок 50. Аутентификация в FastAPI - Python-tutoring</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#50-fastapi" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Python-tutoring" class="md-header__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Python-tutoring
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Урок 50. Аутентификация в FastAPI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Python-tutoring" class="md-nav__button md-logo" aria-label="Python-tutoring" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Python-tutoring
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson1/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 1. Что такое python и с чем его едят?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson2/main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 2. Запуск кода и переменные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson3/lesson3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 3. Функции и строковые методы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson4/lesson4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 4. Числа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson5/lesson5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 5. Функции, области видимости и циклы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson6/lesson6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 6. Циклы и условия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson7/lesson7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 7. Как решать задачи?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson8/lesson8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 8. Рандом, списки, 2 кортежа
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson9/lesson9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 9. Списки и словари
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson10/lesson10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 10. Коты и O-большое
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson11/lesson11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Идеи для проектов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12/lesson12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 12. ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson12_modules/lesson12_modules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 13. ООП и модули
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson14/lesson14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 14. Работа с файловой системой
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson15_read_files/lesson15_read_files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чтение и запись файлов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson16_modules_minecraft/lesson16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 16. Установка модулей и minecraft
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson17/lesson17/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 17. Представление цвета в компьютере и работа с изображениями в Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson18/lesson18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 18. Змейка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson19/lesson19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 19. Решаем задачи из ОГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson20/lesson20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 20. Решаем 17 из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson21/lesson21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 21. Продолжаем решать 17 из ЕГЭ и смотрим на 24-е
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson22/lesson22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 22. Префиксные суммы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson23/lesson23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 23. Упрощенное 24-е задание
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson24/lesson24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 24. Мы дошли до решения 24-го из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson25/lesson25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 25. Другой тип 24-го из ЕГЭ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson26/lesson26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 26. Собираем данные с сайтов
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson27/lesson27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 27. Путешествуем по сайту, собираем данные, сохраняем в файл
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson28/lesson28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 28. Обработка текста
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson29/lesson29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 29. Преобразуем текст в векторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson30/lesson30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 30. Сравниваем тексты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson31/lesson31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 31. TF-IDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson32/lesson32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 32. На чем стоит веб-программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson33/lesson33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 33. Основы HTML: часть 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson34/lesson34/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 34. Основы HTML: часть 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson35/lesson35/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 35. Основы CSS: часть 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson36/lesson36/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 36. Основы CSS: часть 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson37_htmlcss_project/lesson37/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Техническое задание: Персональное портфолио
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson38/lesson38/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 38. Сравнение JavaScript и Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson39/lesson39/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 39. JavaScript 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson40/lesson40/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 40. Vue.JS урок 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson41/lesson41/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 41. Vue.JS урок 2, закрепляем на практике
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson42/lesson42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 42. Vue: props, slots и работа с API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson43/lesson43/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 43. API: Авторизация, фильтрация
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson44/lesson44/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 44. POST, DELETE и Хуки жизненного цикла
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson45/lesson45/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 45. UI-киты на примере Nuxt UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson46/lesson46/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок. FastAPI: создание API на Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson47/lesson47/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок: Pydantic — валидация и конвертация данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson48_study/lesson48_study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 48 (подготовка). Переменные окружения, HTTP-запросы и даты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson48_project/lesson48/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 48. Проект: Дашборд игры в Steam
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lesson49/lesson49/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 49. Аутентификация: хеширование паролей и JWT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 50. Аутентификация в FastAPI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Урок 50. Аутентификация в FastAPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 0. Повторение
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 1. Новый материал
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 1. Новый материал">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-annotated-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Annotated-типы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Annotated-типы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Annotated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где это уже встречалось
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Подготовка к FastAPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-depends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Инъекция зависимостей через Depends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 Инъекция зависимостей через Depends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Цепочка зависимостей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это нужно
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-httpbearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 HTTPBearer — извлечение токена из запроса
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 HTTPBearer — извлечение токена из запроса">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как передаётся токен
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpbearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPBearer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Авторизация в Swagger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автоматическая ошибка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Связь с предыдущим материалом
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоги
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Домашнее задание
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Домашнее задание">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 1. Цепочка из 1 зависимости
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 2. Цепочка из 2 зависимостей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-get_token_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 3. Функция get_token_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-get_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 4. Функция get_user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-endpoint-register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 5. Endpoint /register
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-endpoint-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 6. Endpoint /login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-endpoint-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 7. Endpoint /profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-swagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 8. Тестирование через Swagger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 0. Повторение
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Часть 1. Новый материал
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Часть 1. Новый материал">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-annotated-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Annotated-типы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 Annotated-типы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Annotated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где это уже встречалось
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Подготовка к FastAPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-depends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Инъекция зависимостей через Depends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 Инъекция зависимостей через Depends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Идея
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Цепочка зависимостей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем это нужно
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-httpbearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 HTTPBearer — извлечение токена из запроса
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 HTTPBearer — извлечение токена из запроса">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как передаётся токен
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpbearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPBearer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Авторизация в Swagger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автоматическая ошибка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Связь с предыдущим материалом
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоги
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Домашнее задание
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Домашнее задание">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 1. Цепочка из 1 зависимости
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 2. Цепочка из 2 зависимостей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-get_token_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 3. Функция get_token_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-get_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 4. Функция get_user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-endpoint-register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 5. Endpoint /register
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-endpoint-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 6. Endpoint /login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-endpoint-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 7. Endpoint /profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-swagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задание 8. Тестирование через Swagger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="50-fastapi">Урок 50. Аутентификация в FastAPI</h1>
+<p>В этом уроке мы применим знания о JWT и хешировании паролей на практике — реализуем аутентификацию в FastAPI. Вы узнаете про <code>Annotated</code>-типы, инъекцию зависимостей через <code>Depends</code> и <code>HTTPBearer</code>, а в домашнем задании самостоятельно построите цепочку аутентификации от регистрации до защищённого профиля.</p>
+<hr />
+<h2 id="0">Часть 0. Повторение</h2>
+<p>Перед стартом убедитесь, что вы помните ключевые концепции из <a href="../../lesson49/lesson49/">урока 49</a>.</p>
+<p><strong>Для чего используются JWT-токены?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+JWT-токены используются для передачи данных между клиентом и сервером в безопасном виде. Сервер создаёт токен, кладёт в него данные (например, имя пользователя) и подписывает секретным ключом. Клиент отправляет токен с каждым запросом, чтобы сервер знал, кто делает запрос.
+</details>
+
+<p><strong>Шифруются ли данные в JWT?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+Нет. Данные в JWT не зашифрованы — их может прочитать любой, у кого есть токен. JWT гарантирует не конфиденциальность, а целостность: подпись гарантирует, что данные не были изменены без секретного ключа.
+</details>
+
+<p><strong>Почему JWT-токен нельзя подделать без секретного ключа?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+Потому что подпись вычисляется с помощью секретного ключа. Если изменить данные в токене, подпись перестанет совпадать. Чтобы пересчитать подпись для новых данных, нужен секретный ключ, который есть только у сервера.
+</details>
+
+<p><strong>Какие базовые поля есть в JWT?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+- `sub` (subject) — идентификатор пользователя (мы кладём туда `username`)
+- `iat` (issued at) — когда токен выдан
+- `exp` (expiration) — когда токен истекает
+</details>
+
+<p><strong>Чем хеширование отличается от шифрования?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+Хеширование — одностороннее: из хеша нельзя восстановить исходные данные. Шифрование — двустороннее: зашифрованные данные можно расшифровать с помощью ключа. Пароли хешируют, а не шифруют, потому что серверу не нужно знать пароль — ему нужно только уметь его проверить.
+</details>
+
+<p><strong>Зачем хешировать пароли?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+Если хранить пароли в открытом виде, утечка базы данных скомпрометирует все пароли. Хеш невозможно обратить, поэтому при утечке базы злоумышленник получит набор хешей, из которых нельзя восстановить пароли.
+</details>
+
+<p><strong>Что такое «соль» в алгоритме хеширования? Зачем она нужна?</strong></p>
+<details>
+<summary>Ответ</summary>
+
+Соль — случайная строка, которая добавляется к паролю перед хешированием. Благодаря соли одинаковые пароли дают разные хеши. Это защищает от атак по радужным таблицам — заранее вычисленным хешам популярных паролей.
+</details>
+
+<hr />
+<h2 id="1">Часть 1. Новый материал</h2>
+<h3 id="11-annotated-">1.1 Annotated-типы</h3>
+<h4 id="annotated">Что такое Annotated</h4>
+<p><code>Annotated</code> — это способ приложить к типу дополнительные данные (метаданные). Тип остаётся тем же, но к нему «приклеивается» дополнительная информация.</p>
+<p>Пример:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">age</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="s2">&quot;возраст пользователя в годах&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">age</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># 25</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">age</span><span class="p">))</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># &lt;class &#39;int&#39;&gt;</span>
+</span></code></pre></div>
+<p><code>age</code> ведёт себя как обычный <code>int</code>. Строка <code>"возраст пользователя в годах"</code> — это метаданные. В рамках самого Python <code>Annotated</code> <strong>не значит ничего</strong> — Python просто игнорирует метаданные. Но сторонние библиотеки могут их читать и использовать.</p>
+<h4 id="_1">Где это уже встречалось</h4>
+<p>В <a href="../../lesson47/lesson47/">уроке 47</a> мы использовали <code>Annotated</code> с Pydantic-валидаторами:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">AfterValidator</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">non_negative</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Должно быть &gt;= 0&quot;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">return</span> <span class="n">number</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">MovieData</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">views</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">AfterValidator</span><span class="p">(</span><span class="n">non_negative</span><span class="p">)]</span>
+</span></code></pre></div>
+<p>Pydantic читает метаданные (<code>AfterValidator(non_negative)</code>) и применяет валидатор к полю. Сам Python не делает ничего — вся логика в Pydantic.</p>
+<h4 id="fastapi">Подготовка к FastAPI</h4>
+<p>FastAPI тоже читает метаданные в <code>Annotated</code>. Когда FastAPI видит <code>Annotated[тип, Depends(функция)]</code>, он вызывает функцию и подаёт результат в endpoint. Об этом — в следующем разделе.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Что выведет этот код?</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;имя пользователя&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Alice&quot;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</span></code></pre></div>
+<details>
+<summary>Ответ</summary>
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&lt;class &#39;str&#39;&gt;
+</span></code></pre></div>
+
+`Annotated` не меняет тип. `name` — обычная строка. Метаданные `"имя пользователя"` игнорируются Python.
+</details>
+
+<hr />
+<h3 id="12-depends">1.2 Инъекция зависимостей через Depends</h3>
+<h4 id="_2">Идея</h4>
+<p>Вместо того чтобы писать всю логику в одном endpoint, мы разбиваем её на функции-зависимости. FastAPI сам вызывает их и подаёт результат в endpoint.</p>
+<p>Пример с одной зависимостью:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_1</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dependency_test</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Depends</span><span class="p">(</span><span class="n">add_1</span><span class="p">)]):</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="k">return</span> <span class="n">a</span>
+</span></code></pre></div>
+<p>Когда приходит запрос <code>POST /test?a=5</code>, FastAPI:</p>
+<ol>
+<li>Видит <code>Depends(add_1)</code> в аннотации параметра <code>a</code></li>
+<li>Вызывает <code>add_1(a=5)</code> — получает <code>6</code></li>
+<li>Передаёт <code>6</code> в <code>dependency_test</code> как аргумент <code>a</code></li>
+<li>Возвращает <code>6</code></li>
+</ol>
+<p>Это то же самое, что написать вручную:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">without_dependency</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">a</span> <span class="o">=</span> <span class="n">add_1</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="k">return</span> <span class="n">a</span>
+</span></code></pre></div>
+<p>Результат одинаковый, но с <code>Depends</code> логика вынесена в отдельную функцию, которую можно переиспользовать.</p>
+<h4 id="_3">Цепочка зависимостей</h4>
+<p>Одна зависимость может зависеть от другой. FastAPI сам выстраивает цепочку вызовов.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_2</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_3</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Depends</span><span class="p">(</span><span class="n">add_2</span><span class="p">)]):</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dependency_test</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Depends</span><span class="p">(</span><span class="n">add_3</span><span class="p">)]):</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="k">return</span> <span class="n">a</span>
+</span></code></pre></div>
+<p>Что происходит при запросе <code>POST /test?a=5</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>запрос (a=5)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    ↓
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>add_2(5) → 7
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    ↓
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>add_3(7) → 8
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    ↓
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>dependency_test(8) → 8
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    ↓
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>ответ: 8
+</span></code></pre></div>
+<p>FastAPI сам определяет порядок вызовов по зависимостям.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Как бы выглядел этот код без <code>Depends</code> — просто вызовами функций?</p>
+<details>
+<summary>Ответ</summary>
+
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_2</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Добавляет 2 к числу.&quot;&quot;&quot;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_3</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Добавляет 2 (через add_2), затем ещё 1.&quot;&quot;&quot;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">add_2</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="k">return</span> <span class="n">result</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/test&#39;</span><span class="p">)</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">without_dependency</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="k">return</span> <span class="n">add_3</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></code></pre></div>
+
+</details>
+
+<h4 id="_4">Зачем это нужно</h4>
+<ul>
+<li><strong>Переиспользование</strong> — одна зависимость используется в нескольких endpoints</li>
+<li><strong>Чистота</strong> — endpoint содержит только бизнес-логику, вся подготовка данных — в зависимостях</li>
+<li><strong>Тестирование</strong> — зависимость можно подменить (например, вместо реального токена передать тестовый)</li>
+</ul>
+<hr />
+<h3 id="13-httpbearer">1.3 HTTPBearer — извлечение токена из запроса</h3>
+<h4 id="_5">Как передаётся токен</h4>
+<p>Когда клиент аутентифицируется, он отправляет токен в HTTP-заголовке <code>Authorization</code>. Заголовок — это метаданные запроса, которые идут перед телом. Пример сырого HTTP-запроса:</p>
+<div class="language-http highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nf">GET</span> <span class="nn">/profile</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">Host</span><span class="o">:</span> <span class="l">localhost:8100</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZSJ9.abc123</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+</span></code></pre></div>
+<p>Токен передаётся в формате <code>Bearer &lt;token&gt;</code>. Слово <code>Bearer</code> — это тип токена (в нашем случае JWT), а после него идёт сама строка токена.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Мы знаем, что токен приходит в заголовке <code>Authorization</code>. Но как получить этот заголовок в FastAPI — не парсить же сырой HTTP вручную?</p>
+<details>
+<summary>Ответ</summary>
+
+FastAPI предоставляет класс `HTTPBearer` из `fastapi.security`, который делает это за нас. Его не нужно вызывать вручную — он подключается через `Depends`, и FastAPI сам извлекает токен из заголовка.
+</details>
+
+<h4 id="httpbearer">HTTPBearer</h4>
+<p><code>HTTPBearer</code> — это класс из <code>fastapi.security</code>, который читает заголовок <code>Authorization: Bearer &lt;token&gt;</code> и достаёт сам токен. Возвращает объект <code>HTTPAuthorizationCredentials</code> с полем <code>.credentials</code> — это строка токена.</p>
+<p>Простейший endpoint, возвращающий токен из запроса:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Depends</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPBearer</span><span class="p">,</span> <span class="n">HTTPAuthorizationCredentials</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">security</span> <span class="o">=</span> <span class="n">HTTPBearer</span><span class="p">()</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/token&#39;</span><span class="p">)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_token_from_request</span><span class="p">(</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">credentials</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">HTTPAuthorizationCredentials</span><span class="p">,</span> <span class="n">Depends</span><span class="p">(</span><span class="n">security</span><span class="p">)],</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">):</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">credentials</span><span class="o">.</span><span class="n">credentials</span><span class="p">}</span>
+</span></code></pre></div>
+<p>Когда приходит запрос с заголовком <code>Authorization: Bearer eyJhbG...</code>, FastAPI:</p>
+<ol>
+<li>Видит <code>Depends(security)</code> — вызывает <code>HTTPBearer</code></li>
+<li><code>HTTPBearer</code> читает заголовок <code>Authorization</code>, извлекает токен <code>eyJhbG...</code></li>
+<li>Возвращает объект <code>HTTPAuthorizationCredentials</code>, у которого <code>.credentials = "eyJhbG..."</code></li>
+<li>Передаёт этот объект в endpoint как <code>credentials</code></li>
+</ol>
+<h4 id="swagger">Авторизация в Swagger</h4>
+<p>Чтобы протестировать этот endpoint в Swagger (<code>/docs</code>), нажмите кнопку <strong>Authorize</strong> в правом верхнем углу. Вставьте токен (без слова <code>Bearer</code>) в поле ввода и нажмите Confirm. Теперь Swagger будет автоматически добавлять заголовок <code>Authorization: Bearer &lt;token&gt;</code> ко всем запросам.</p>
+<h4 id="_6">Автоматическая ошибка</h4>
+<p>Если в запросе нет заголовка <code>Authorization</code> — FastAPI сам вернёт ошибку 403. Не нужно писать <code>if token is None: raise ...</code>. <code>HTTPBearer</code> делает это автоматически.</p>
+<h4 id="_7">Связь с предыдущим материалом</h4>
+<p>В <a href="../../lesson49/lesson49/">домашнем задании урока 49</a> вы написали функцию <code>decode_token</code>, которая принимает строку-токен и делает <code>jwt.decode</code>. В домашнем задании этого урока вы построите цепочку:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>HTTPBearer → get_token_data → get_user → /profile
+</span></code></pre></div>
+<p><code>HTTPBearer</code> извлечёт токен из заголовка, <code>get_token_data</code> вызовет <code>decode_token</code> и вернёт Pydantic-модель с данными из токена, <code>get_user</code> найдёт пользователя по этим данным.</p>
+<p><strong>Упражнение:</strong></p>
+<p>Что произойдёт, если отправить запрос к endpoint выше без заголовка <code>Authorization</code>?</p>
+<details>
+<summary>Ответ</summary>
+
+FastAPI вернёт ошибку 403 автоматически. `HTTPBearer` проверяет наличие заголовка `Authorization: Bearer <token>` и если его нет — выбрасывает ошибку. Нам не нужно проверять это вручную.
+</details>
+
+<hr />
+<h2 id="_8">Итоги</h2>
+<ul>
+<li><code>Annotated</code> — способ приложить метаданные к типу. Python игнорирует метаданные, но библиотеки (Pydantic, FastAPI) могут их читать и использовать.</li>
+<li><code>Depends</code> — FastAPI автоматически вызывает функцию-зависимость и подаёт результат в endpoint. Код становится чище, зависимости переиспользуются.</li>
+<li>Цепочка зависимостей: одна зависимость может зависеть от другой. FastAPI сам выстраивает порядок вызовов.</li>
+<li><code>HTTPBearer</code> извлекает токен из заголовка <code>Authorization: Bearer &lt;token&gt;</code>. Возвращает <code>HTTPAuthorizationCredentials</code> с полем <code>.credentials</code>. Без заголовка — автоматически 403.</li>
+<li>Аутентификация в FastAPI — цепочка зависимостей: <code>HTTPBearer → get_token_data → get_user → endpoint</code>.</li>
+</ul>
+<hr />
+<h2 id="_9">Домашнее задание</h2>
+<p>Задания расположены от простого к сложному.</p>
+<p>Материалы, которые пригодятся:</p>
+<ul>
+<li><a href="../../lesson49/lesson49/">Урок 49. Аутентификация: хеширование и JWT</a> — <code>pwdlib</code>, <code>pyjwt</code>, singleton, абстракции, <code>utils/auth</code> (домашнее задание 5), <code>UserJson</code> (домашнее задание 6)</li>
+<li><a href="../../lesson47/lesson47/">Урок 47. Pydantic</a> — <code>BaseModel</code>, <code>model_validate</code>, <code>model_dump</code></li>
+<li><a href="../../lesson46/lesson46/">Урок 46. FastAPI</a> — эндпоинты, <code>HTTPException</code>, query-параметры, POST-запросы</li>
+</ul>
+<p>В этом задании вы используете функции из домашнего задания урока 49:</p>
+<ul>
+<li><code>decode_token(token: str) -&gt; dict</code> — из ДЗ урока 49, делает <code>jwt.decode</code>, бросает <code>HTTPException</code> при ошибке</li>
+<li><code>get_token(data: dict) -&gt; str</code> — создаёт JWT-токен</li>
+<li><code>get_hashed_password(password: str) -&gt; str</code> — хеширует пароль</li>
+<li><code>is_hashed_equal(plain_password: str, hashed_password: str) -&gt; bool</code> — проверяет пароль</li>
+<li><code>UserJson(UserStorage)</code> — хранилище пользователей в JSON-файле</li>
+</ul>
+<p>Структура проекта:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>backend/
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  api.py              — эндпоинты
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  schemas/user.py     — Pydantic-модели (придумайте сами)
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  utils/auth.py       — из ДЗ урока 49
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  utils/user.py       — get_token_data, get_user
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  model/user.py       — UserStorage (ABC), UserJson (из ДЗ урока 49)
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  main.py             — uvicorn.run
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  .env                — SECRET_KEY, ALGORITHM, EXP_DATE
+</span></code></pre></div>
+<h3 id="1-1">Задание 1. Цепочка из 1 зависимости</h3>
+<p>Напишите endpoint <code>GET /normalize?text=...</code>, который принимает query-параметр <code>text</code> и возвращает строку, приведённую к нижнему регистру и очищенную от пробелов по краям (<code>strip</code> + <code>lower</code>).</p>
+<p>Логику нормализации вынесите в функцию-зависимость. Endpoint должен принимать результат через <code>Annotated[str, Depends(...)]</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Запрос: GET /normalize?text=  Hello World  </span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># Ожидаемый ответ: &quot;hello world&quot;</span>
+</span></code></pre></div>
+<h3 id="2-2">Задание 2. Цепочка из 2 зависимостей</h3>
+<p>Напишите endpoint <code>GET /price?raw=...</code>, который принимает query-параметр <code>raw</code> — строку цены (например, <code>"999₽"</code> или <code>"$1299"</code>). Endpoint должен вернуть итоговую цену после применения скидки 10%.</p>
+<p>Реализуйте две функции-зависимости:</p>
+<ol>
+<li>Первая — принимает строку, удаляет символы валюты (<code>₽</code> и <code>$</code>), преобразует в <code>int</code></li>
+<li>Вторая — зависит от первой, применяет скидку 10% (округлите вниз до целого)</li>
+</ol>
+<p>Endpoint принимает результат второй зависимости через <code>Annotated[int, Depends(...)]</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Запрос: GET /price?raw=1000₽</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Ожидаемый ответ: 900</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># Запрос: GET /price?raw=$500</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># Ожидаемый ответ: 450</span>
+</span></code></pre></div>
+<h3 id="3-get_token_data">Задание 3. Функция <code>get_token_data</code></h3>
+<p>Напишите функцию <code>get_token_data</code> в модуле <code>utils/user.py</code>. Это зависимость, которая:</p>
+<ol>
+<li>Через <code>Depends(HTTPBearer())</code> получает <code>HTTPAuthorizationCredentials</code></li>
+<li>Достаёт строку токена из <code>credentials.credentials</code></li>
+<li>Вызывает <code>decode_token(token)</code> из <code>utils/auth.py</code> (из ДЗ урока 49)</li>
+<li>Если <code>decode_token</code> бросил <code>PyJWTError</code> — выбрасывает <code>HTTPException</code>:</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">detail</span><span class="o">=</span><span class="s1">&#39;Could not validate credentials&#39;</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;WWW-Authenticate&#39;</span><span class="p">:</span> <span class="s1">&#39;Bearer&#39;</span><span class="p">},</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>Возвращает Pydantic-модель с данными из токена. Модель придумайте сами — она должна содержать поле <code>sub: str</code> (username пользователя)</li>
+</ol>
+<h3 id="4-get_user">Задание 4. Функция <code>get_user</code></h3>
+<p>Напишите функцию <code>get_user</code> в модуле <code>utils/user.py</code>. Это зависимость, которая:</p>
+<ol>
+<li>Через <code>Depends(get_token_data)</code> получает модель с данными токена</li>
+<li>Достаёт <code>sub</code> (username) из модели</li>
+<li>Ищет пользователя в <code>UserJson</code> по username</li>
+<li>Если пользователь не найден — <code>raise HTTPException(status_code=401, detail='User not found')</code></li>
+<li>Возвращает Pydantic-модель с публичными данными пользователя (без хеша пароля). Модель придумайте сами</li>
+</ol>
+<h3 id="5-endpoint-register">Задание 5. Endpoint <code>/register</code></h3>
+<p>Напишите endpoint <code>POST /register</code> в <code>api.py</code>. Используйте Pydantic-модель для тела запроса (придумайте сами — должны быть <code>username</code>, <code>password</code>, <code>first_name</code>, <code>second_name</code>).</p>
+<p>Логика:</p>
+<ol>
+<li>Проверить, что username не занят — если занят, <code>HTTPException(400, 'Username already exists')</code></li>
+<li>Захешировать пароль через <code>get_hashed_password</code> из <code>utils/auth.py</code></li>
+<li>Создать пользователя в <code>UserJson</code> (передать хеш пароля, не сам пароль)</li>
+<li>Вернуть Pydantic-модель с публичными данными (без пароля и хеша)</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Запрос: POST /register</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Тело: {&quot;username&quot;: &quot;alice&quot;, &quot;password&quot;: &quot;secret123&quot;, &quot;first_name&quot;: &quot;Alice&quot;, &quot;second_name&quot;: &quot;Smith&quot;}</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Ожидаемый ответ: {&quot;username&quot;: &quot;alice&quot;, &quot;first_name&quot;: &quot;Alice&quot;, &quot;second_name&quot;: &quot;Smith&quot;}</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Статус: 201</span>
+</span></code></pre></div>
+<h3 id="6-endpoint-login">Задание 6. Endpoint <code>/login</code></h3>
+<p>Напишите endpoint <code>POST /login</code> в <code>api.py</code>. Используйте Pydantic-модель для тела запроса (придумайте сами — должны быть <code>username</code> и <code>password</code>).</p>
+<p>Логика:</p>
+<ol>
+<li>Найти пользователя в <code>UserJson</code> по username</li>
+<li>Если не найден — <code>HTTPException(401, 'login or password is incorrect')</code></li>
+<li>Проверить пароль через <code>is_hashed_equal</code> из <code>utils/auth.py</code></li>
+<li>Если пароль неверный — <code>HTTPException(401, 'login or password is incorrect')</code></li>
+<li>Создать токен через <code>get_token({'sub': username})</code> из <code>utils/auth.py</code></li>
+<li>Вернуть <code>{'access_token': токен, 'token_type': 'Bearer'}</code></li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Запрос: POST /login</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Тело: {&quot;username&quot;: &quot;alice&quot;, &quot;password&quot;: &quot;secret123&quot;}</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># Ожидаемый ответ: {&quot;access_token&quot;: &quot;eyJhbG...&quot;, &quot;token_type&quot;: &quot;Bearer&quot;}</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Запрос: POST /login</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Тело: {&quot;username&quot;: &quot;alice&quot;, &quot;password&quot;: &quot;wrong&quot;}</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># Ожидаемый ответ: 401 — login or password is incorrect</span>
+</span></code></pre></div>
+<h3 id="7-endpoint-profile">Задание 7. Endpoint <code>/profile</code></h3>
+<p>Напишите endpoint <code>GET /profile</code> в <code>api.py</code>. Endpoint использует <code>get_user</code> через <code>Annotated</code> + <code>Depends</code> и возвращает данные текущего пользователя.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Запрос: GET /profile</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># Заголовок: Authorization: Bearer eyJhbG...</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Ожидаемый ответ: {&quot;username&quot;: &quot;alice&quot;, &quot;first_name&quot;: &quot;Alice&quot;, &quot;second_name&quot;: &quot;Smith&quot;}</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Запрос: GET /profile (без заголовка Authorization)</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1"># Ожидаемый ответ: 403</span>
+</span></code></pre></div>
+<h3 id="8-swagger">Задание 8. Тестирование через Swagger</h3>
+<ol>
+<li>Запустите сервер (<code>python main.py</code>)</li>
+<li>Откройте <code>http://localhost:8100/docs</code></li>
+<li>Зарегистрируйте пользователя через <code>POST /register</code></li>
+<li>Нажмите кнопку <strong>Authorize</strong> в Swagger, введите токен, полученный из <code>POST /login</code></li>
+<li>Выполните запрос <code>GET /profile</code> — убедитесь, что вернулись данные вашего пользователя</li>
+<li>Выполните запрос <code>GET /profile</code> без авторизации (очистите токен в Authorize) — убедитесь, что возвращается 403</li>
+<li>Выполните запрос <code>GET /profile</code> с неверным токеном — убедитесь, что возвращается 401</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
