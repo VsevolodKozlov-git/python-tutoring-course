@@ -2,7 +2,7 @@
 
 ## О проекте
 
-Курс по программированию от Всеволода Козлова (телеграм @Vsevolod026). 47 уроков от основ Python до полностековой веб-разработки. Сайт построен на MkDocs Material, исходники уроков — markdown-файлы в `docs/lessonN/lessonN.md`. Навигация настраивается в `mkdocs.yml`.
+Курс по программированию от Всеволода Козлова (телеграм @Vsevolod026). 51 урок от основ Python до полностековой веб-разработки. Сайт построен на MkDocs Material, исходники уроков — markdown-файлы в `docs/lessonN/lessonN.md`. Навигация настраивается в `mkdocs.yml`.
 
 ## Что освоено учениками
 
@@ -18,6 +18,9 @@
 | Веб-разработка | 32–37 | HTML (теги, формы, таблицы), CSS (каскад, специфичность, flexbox, box-sizing), адаптивная вёрстка, проект портфолио |
 | JavaScript и Vue | 38–45 | JS vs Python, переменные, функции, Vue.js (`ref`, `v-model`, `v-for`, `props`, `slots`, lifecycle hooks), работа с API (Axios), Nuxt UI |
 | Backend | 46–47 | FastAPI (эндпоинты, `HTTPException`, query-параметры, POST/PUT/DELETE), Pydantic (`BaseModel`, `model_validate`, `model_dump`, `BeforeValidator`, `AfterValidator`) |
+| Проект | 48 | Дашборд игры в Steam: Steam Web/Store API, `httpx`, `.env`, форматы дат, обработка HTTP-ошибок (+ подготовительный урок) |
+| Аутентификация (backend) | 49–50 | Хеширование паролей (`pwdlib`, Argon2), JWT (`pyjwt`, HS256, `sub`/`iat`/`exp`), singleton, абстракции, `Annotated`, `Depends`, `HTTPBearer`, эндпоинты `/register`, `/login`, `/profile` |
+| Аутентификация (frontend) | 51 | Токен в `localStorage`, реактивное состояние `authState`, axios-интерцепторы (request/response), обработка 401, route guard (`meta.requiresAuth`), страницы входа/регистрации/профиля |
 
 ## Структура урока
 
